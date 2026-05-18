@@ -9,6 +9,7 @@
     --color2: #FFBF78;
     --color3: #FFEEA9;
     --color4: #FEFFD2;
+    --hero-tittle: #5B2400;
     --background: #F5F4EC;
     --light: #ffffff;
     --drop-shadow: rgba(0, 0, 0, 0.1);
@@ -26,6 +27,7 @@ body{
     padding: 0;
 }
 
+/* ------------------------------------ Navbar ------------------------------------------------ */
 .main-nav{
     background-color: white;
     position: sticky;
@@ -84,4 +86,13 @@ body{
 .btn-contact a:hover{
     background-color: var(--color1-hover);
     box-shadow: 5px 5px 10px var(--hover-drop-shadow);
+}
+
+/* ---------------------------------- hero section ------------------------------------- */
+.hero-tittle{
+    color: var(--hero-tittle);
+}
+
+.hero-tittle span{
+    color: var(--color1);
 }
