@@ -1,0 +1,87 @@
+@font-face {
+    font-family: "Ubuntu";
+    src: url("../font/Ubuntu-Regular.ttf") format("truetype");
+}
+
+:root{
+    --color1: #FF7D29;
+    --color1-hover: #C34D00;
+    --color2: #FFBF78;
+    --color3: #FFEEA9;
+    --color4: #FEFFD2;
+    --background: #F5F4EC;
+    --light: #ffffff;
+    --drop-shadow: rgba(0, 0, 0, 0.1);
+    --hover-drop-shadow: rgba(0, 0, 0, 0.2);
+}
+
+*{
+    box-sizing: border-box;
+    /* outline: 1px solid red; */
+}
+
+body{
+    font-family: "Ubuntu", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.main-nav{
+    background-color: white;
+    position: sticky;
+    top: 0;
+}
+
+.main-nav ul{
+    display: flex;
+    padding-inline: 4em;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2em;
+}
+
+.main-nav li{
+    list-style-type: none;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.nav-menu a{
+    color: black;
+    text-decoration: none;
+    transition: 0.3s ease-out;
+}
+
+.nav-menu a:hover{
+    color: var(--color1);
+}
+
+.nav-menu.active a{
+    color: var(--color1);
+}
+
+.contact{
+    background-color: var(--color1);
+    padding: 5px;
+}
+
+.btn-contact a{
+    text-decoration: none;
+    background-color: var(--color1);
+    color: var(--light);
+    padding: 12px 28px;
+    line-height: 1;
+    font-size: 22px;
+    border-radius: 8px;
+    display: inline-block;
+    transition: all 0.5s ease-in-out;
+}
+
+.btn-contact a:hover{
+    background-color: var(--color1-hover);
+    box-shadow: 5px 5px 10px var(--hover-drop-shadow);
+}
