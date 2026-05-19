@@ -26,7 +26,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "Ubuntu", sans-serif;
   background: var(--cream);
   color: var(--text);
   overflow-x: hidden;
@@ -52,7 +52,7 @@ img { display: block; width: 100%; object-fit: cover; }
 }
 
 .nav-logo {
-  font-family: 'Playfair Display', serif;
+  font-family: "Ubuntu", serif;
   font-size: 1.25rem; font-weight: 700;
   color: var(--orange); text-decoration: none;
   flex-shrink: 0;
@@ -156,7 +156,7 @@ img { display: block; width: 100%; object-fit: cover; }
 }
 
 .hero-title {
-  font-family: 'Playfair Display', serif;
+  font-family: "Ubuntu", serif;
   font-size: clamp(2.2rem, 4vw, 3.2rem);
   font-weight: 900; line-height: 1.15;
   color: var(--dark);
@@ -174,7 +174,7 @@ img { display: block; width: 100%; object-fit: cover; }
   border: none; cursor: pointer;
   padding: 14px 32px; border-radius: 12px;
   font-size: 1rem; font-weight: 700;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "Ubuntu"rif;
   transition: background 0.25s, transform 0.2s, box-shadow 0.2s;
 }
 .btn-primary:hover {
@@ -216,7 +216,7 @@ img { display: block; width: 100%; object-fit: cover; }
   padding: 80px 24px;
 }
 .section-title {
-  font-family: 'Playfair Display', serif;
+  font-family: "Ubuntu", serif;
   text-align: center; font-size: clamp(1.8rem, 3vw, 2.5rem);
   font-weight: 700; margin-bottom: 48px; color: var(--dark);
 }
@@ -260,7 +260,7 @@ img { display: block; width: 100%; object-fit: cover; }
   padding: 4px 10px; border-radius: 6px;
   display: inline-block; margin-bottom: 8px;
 }
-.feat-overlay h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 4px; }
+.feat-overlay h3 { font-family: "Ubuntu", serif; font-size: 1.3rem; margin-bottom: 4px; }
 .feat-overlay p { font-size: 0.85rem; opacity: 0.8; }
 
 .featured-card.pink {
@@ -269,7 +269,7 @@ img { display: block; width: 100%; object-fit: cover; }
 }
 .featured-card.pink .feat-text { width: 100%; display: flex; flex-direction: column; }
 .feat-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.feat-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--orange); }
+.feat-name { font-family: "Ubuntu", serif; font-size: 1.1rem; font-weight: 700; color: var(--orange); }
 .feat-price {
   background: var(--orange); color: #fff;
   padding: 4px 10px; border-radius: 8px;
@@ -283,7 +283,7 @@ img { display: block; width: 100%; object-fit: cover; }
   padding: 32px;
 }
 .feat-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
-.featured-card.light h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
+.featured-card.light h3 { font-family: "Ubuntu", serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
 .featured-card.light p { font-size: 0.88rem; color: var(--muted); margin-bottom: 16px; }
 .feat-link { color: var(--orange); font-weight: 700; font-size: 0.9rem; text-decoration: none; }
 .feat-link:hover { text-decoration: underline; }
@@ -293,7 +293,7 @@ img { display: block; width: 100%; object-fit: cover; }
   padding: 32px; overflow: hidden; min-height: 220px;
 }
 .featured-card.dark-alt .feat-text { position: relative; z-index: 2; color: #fff; }
-.featured-card.dark-alt h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 10px; }
+.featured-card.dark-alt h3 { font-family: "Ubuntu", serif; font-size: 1.2rem; margin-bottom: 10px; }
 .featured-card.dark-alt p { font-size: 0.85rem; opacity: 0.75; margin-bottom: 16px; }
 .feat-bg-img {
   position: absolute; right: 0; top: 0; width: 45%; height: 100%;
@@ -302,7 +302,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .btn-orange {
   background: var(--orange); color: #fff; border: none;
   padding: 10px 20px; border-radius: 10px;
-  font-family: 'DM Sans', sans-serif; font-weight: 700;
+  font-family: "Ubuntu"rif; font-weight: 700;
   font-size: 0.88rem; cursor: pointer;
   transition: background 0.25s, transform 0.2s;
 }
@@ -320,7 +320,7 @@ img { display: block; width: 100%; object-fit: cover; }
   color: var(--orange); display: block; margin-bottom: 12px;
 }
 .phil-text h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Ubuntu", serif;
   font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 900;
   line-height: 1.2; margin-bottom: 24px; color: var(--dark);
 }
@@ -352,7 +352,7 @@ img { display: block; width: 100%; object-fit: cover; }
   color: var(--orange); display: block; margin-bottom: 8px;
 }
 .prod-title {
-  font-family: 'Playfair Display', serif;
+  font-family: "Ubuntu", serif;
   font-size: clamp(3rem, 6vw, 4.5rem);
   font-weight: 900; line-height: 1.0;
   color: var(--dark); margin-bottom: 20px;
@@ -401,7 +401,7 @@ img { display: block; width: 100%; object-fit: cover; }
   gap: 12px; margin-bottom: 8px;
 }
 .prod-info h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Ubuntu", serif;
   font-size: 1.15rem; font-weight: 700; color: var(--dark);
 }
 .prod-price { font-weight: 700; color: var(--dark); font-size: 0.95rem; white-space: nowrap; }
@@ -418,7 +418,7 @@ img { display: block; width: 100%; object-fit: cover; }
   gap: 32px;
 }
 .co-text h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Ubuntu", serif;
   font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; color: var(--dark);
 }
 .co-text p { color: var(--muted); font-size: 0.92rem; max-width: 400px; line-height: 1.6; }
@@ -427,7 +427,7 @@ img { display: block; width: 100%; object-fit: cover; }
   background: var(--brown); color: #fff;
   border: none; cursor: pointer;
   padding: 14px 28px; border-radius: 12px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "Ubuntu", serif;
   font-size: 0.95rem; font-weight: 700; white-space: nowrap;
   transition: background 0.25s, transform 0.2s, box-shadow 0.2s;
 }
@@ -452,7 +452,7 @@ img { display: block; width: 100%; object-fit: cover; }
 }
 .footer-brand { flex: 1; min-width: 200px; }
 .footer-logo {
-  font-family: 'Playfair Display', serif;
+  font-family: "Ubuntu", serif;
   font-size: 1.1rem; font-weight: 700; color: var(--orange);
   display: block; margin-bottom: 10px;
 }
