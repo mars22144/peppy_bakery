@@ -4,7 +4,7 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['role'] = $_POST['role']; // 'admin' or 'customer'
     if ($_POST['role'] == 'admin') {
-        header("Location: admin/index.php");
+        header("Location: admin/index_admin.php");
     } else {
         header("Location: index.php");
     }

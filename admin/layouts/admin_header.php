@@ -26,10 +26,10 @@ $base_url = '/peppy_bakery';
         <p style="color: #aaa; font-size: 0.8rem; margin-top: 5px;">Admin Panel</p>
     </div>
     <ul class="sidebar-menu">
-        <li><a href="<?= $base_url ?>/admin/index.php"><i class="fas fa-home"></i> Dashboard</a></li>
-        <li><a href="<?= $base_url ?>/admin/products.php"><i class="fas fa-box"></i> Kelola Produk</a></li>
-        <li><a href="<?= $base_url ?>/admin/orders.php"><i class="fas fa-shopping-bag"></i> Pesanan</a></li>
-        <li><a href="<?= $base_url ?>/admin/users.php"><i class="fas fa-users"></i> Pelanggan</a></li>
+        <li><a href="<?= $base_url ?>/admin/index_admin.php"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="<?= $base_url ?>/admin/products_admin.php"><i class="fas fa-box"></i> Kelola Produk</a></li>
+        <li><a href="<?= $base_url ?>/admin/orders_admin.php"><i class="fas fa-shopping-bag"></i> Pesanan</a></li>
+        <li><a href="<?= $base_url ?>/admin/users_admin.php"><i class="fas fa-users"></i> Pelanggan</a></li>
         <li style="margin-top: 30px;"><a href="<?= $base_url ?>/logout.php" style="color: #ff4757;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
     </ul>
 </div>
