@@ -13,6 +13,7 @@
   font-display: swap;
 }
 
+
 :root {
   --cream: #f0ede6;
   --white: #ffffff;
@@ -1026,6 +1027,10 @@ img {
   }
 }
 
+/* =========================================================
+   TAMBAHAN: Class-class dari inline style yang dipindahkan
+   ========================================================= */
+
 /* === NAVBAR: action group (cart + login/logout) === */
 .nav-action-group {
   display: flex;
@@ -1088,6 +1093,11 @@ a.btn-primary {
 .auth-section {
   padding-top: 100px;
   padding-bottom: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-place{
   display: flex;
   justify-content: center;
 }
@@ -1522,3 +1532,694 @@ a.btn-primary {
   cursor: pointer;
   margin-top: 15px;
 }
+
+/* =========================================================
+   PRODUCT DETAIL PAGE
+   ========================================================= */
+
+/* === LAYOUT === */
+.detail-section {
+  padding: 48px 0 80px;
+}
+
+.detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* === BREADCRUMB === */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 36px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.breadcrumb a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: var(--orange);
+}
+
+.breadcrumb-sep {
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+.breadcrumb-current {
+  color: var(--dark);
+  font-weight: 600;
+}
+
+/* === MAIN GRID === */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+  margin-bottom: 80px;
+}
+
+/* === IMAGE SIDE === */
+.detail-img-wrap {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--card-bg);
+}
+
+.detail-img-main {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.detail-img-wrap:hover .detail-img-main {
+  transform: scale(1.04);
+}
+
+.detail-img-badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: var(--orange);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 8px;
+  letter-spacing: 0.05em;
+}
+
+.detail-thumbnails {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.detail-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.detail-thumb.active,
+.detail-thumb:hover {
+  border-color: var(--orange);
+}
+
+.detail-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* === INFO SIDE === */
+.detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.detail-title {
+  font-family: "Ubuntu", serif;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 900;
+  line-height: 1.15;
+  color: var(--dark);
+}
+
+.detail-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-stars {
+  color: #f5a623;
+  font-size: 1rem;
+  letter-spacing: 2px;
+}
+
+.detail-rating-count {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.detail-price {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.detail-price-main {
+  font-family: "Ubuntu", serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--orange);
+}
+
+.detail-price-unit {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.detail-desc {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.8;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* === META LIST === */
+.detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.detail-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+}
+
+.detail-meta-icon {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.detail-meta-label {
+  color: var(--muted);
+  min-width: 110px;
+}
+
+.detail-meta-value {
+  color: var(--dark);
+  font-weight: 600;
+}
+
+.detail-stock-ok {
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+.detail-stock-low {
+  color: #e65100;
+  font-weight: 700;
+}
+
+.detail-stock-out {
+  color: #c62828;
+  font-weight: 700;
+}
+
+/* === QUANTITY + CTA === */
+.detail-order {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-qty-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.detail-qty-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.detail-qty-control {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.detail-qty-btn {
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--dark);
+  cursor: pointer;
+  transition: background 0.18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-qty-btn:hover {
+  background: var(--card-bg);
+}
+
+.detail-qty-input {
+  width: 48px;
+  border: none;
+  border-left: 1.5px solid rgba(0, 0, 0, 0.12);
+  border-right: 1.5px solid rgba(0, 0, 0, 0.12);
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: "Ubuntu", sans-serif;
+  outline: none;
+  padding: 0;
+  height: 40px;
+  background: #fff;
+}
+
+.detail-cta-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.detail-cta-row .btn-primary {
+  flex: 1;
+  justify-content: center;
+  font-size: 1rem;
+  padding: 14px 24px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-wishlist {
+  width: 50px;
+  height: 50px;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-wishlist:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: #fff8f3;
+}
+
+.btn-wishlist.active {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: #fff8f3;
+}
+
+/* === LOGIN NOTICE === */
+.detail-login-notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff8f0;
+  border: 1px solid rgba(232, 119, 34, 0.2);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.detail-login-notice a {
+  color: var(--orange);
+  font-weight: 700;
+}
+
+/* === TABS (deskripsi, cara, ulasan) === */
+.detail-tabs {
+  margin-bottom: 60px;
+}
+
+.tab-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+  margin-bottom: 32px;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  padding: 12px 28px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--dark);
+}
+
+.tab-btn.active {
+  color: var(--orange);
+  border-bottom-color: var(--orange);
+}
+
+.tab-pane {
+  display: none;
+  animation: fadeIn 0.25s ease;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tab: Deskripsi */
+.detail-description {
+  max-width: 680px;
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.85;
+}
+
+.detail-description p {
+  margin-bottom: 14px;
+}
+
+.detail-description p:last-child {
+  margin-bottom: 0;
+}
+
+.detail-ingredients {
+  margin-top: 24px;
+  padding: 20px 24px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+}
+
+.detail-ingredients h4 {
+  font-family: "Ubuntu", serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--dark);
+}
+
+.detail-ingredients p {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* Tab: Cara Penyimpanan */
+.storage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 600px;
+}
+
+.storage-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.storage-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.storage-item-body h5 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 3px;
+}
+
+.storage-item-body p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Tab: Ulasan */
+.reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 24px;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  margin-bottom: 28px;
+}
+
+.reviews-score {
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.reviews-score-num {
+  font-family: "Ubuntu", serif;
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--dark);
+  line-height: 1;
+}
+
+.reviews-score-stars {
+  color: #f5a623;
+  font-size: 1rem;
+  margin: 4px 0 2px;
+}
+
+.reviews-score-count {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.reviews-bars {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.review-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.review-bar-label {
+  min-width: 40px;
+}
+
+.review-bar-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.review-bar-fill {
+  height: 100%;
+  background: var(--orange);
+  border-radius: 3px;
+}
+
+.review-bar-count {
+  min-width: 20px;
+  text-align: right;
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.review-item {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.review-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.review-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--dark);
+}
+
+.review-date {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.review-stars {
+  color: #f5a623;
+  font-size: 0.9rem;
+}
+
+.review-text {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* === RELATED PRODUCTS === */
+.related-title {
+  font-family: "Ubuntu", serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 24px;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .related-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .detail-section {
+    padding: 32px 0 60px;
+  }
+
+  .detail-cta-row .btn-primary {
+    flex: unset;
+    width: 100%;
+  }
+
+  .related-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .reviews-summary {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .tab-btn {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+/* === Product Detail — sisa class dari inline style === */
+.detail-rating-num {
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.form-display-contents {
+  display: contents;
+}
+
+.btn-dark-centered {
+  text-align: center;
+  justify-content: center;
+}
+
+/* review bar fill width di-set via PHP dinamis — inline style diizinkan */
