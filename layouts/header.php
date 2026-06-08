@@ -1,0 +1,64 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// Base URL (sesuaikan dengan nama folder project kamu jika berbeda)
+$base_url = '/peppy_bakery';
+?>
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peppy Bakery</title>
+    <link rel="stylesheet" href="<?= $base_url ?>/assets/css/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a class="nav-logo" href="<?= $base_url ?>/index.php">Peppy Bakery</a>
+            <ul class="nav-links">
+                <li><a href="<?= $base_url ?>/index.php" class="nav-link">Home</a></li>
+                <li><a href="<?= $base_url ?>/products.php" class="nav-link">Product</a></li>
+                <li><a href="<?= $base_url ?>/about.php" class="nav-link">About</a></li>
+                <li><a href="<?= $base_url ?>/faq.php" class="nav-link">FAQ</a></li>
+            </ul>
+
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'customer'): ?>
+                    <a href="<?= $base_url ?>/cart.php" style="color: var(--text-dark); text-decoration: none; font-size: 1.2rem;"><i class="fas fa-shopping-cart"></i></a>
+                    <a href="<?= $base_url ?>/customer/orders.php" style="color: var(--text-dark); text-decoration: none; font-size: 1.2rem;"><i class="fas fa-user"></i></a>
+                    <a href="<?= $base_url ?>/logout.php" class="ripple-btn" style="padding: 10px 20px; background: #e0e0e0; color: #333; border-radius: 50px; text-decoration: none; font-weight: 500;">Logout</a>
+                <?php else: ?>
+                    <a href="<?= $base_url ?>/login.php" class="nav-contact ripple-btn" style="text-decoration: none;">Login</a>
+                <?php endif; ?>
+            </div>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="<?= $base_url ?>/index.php">Home</a>
+            <a href="<?= $base_url ?>/products.php">Product</a>
+            <a href="<?= $base_url ?>/about.php">About</a>
+            <a href="<?= $base_url ?>/faq.php">FAQ</a>
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'customer'): ?>
+                <a href="<?= $base_url ?>/cart.php"><i class="fas fa-shopping-cart"></i> Cart</a>
+                <a href="<?= $base_url ?>/customer/orders.php"><i class="fas fa-user"></i> Profile</a>
+                <a href="<?= $base_url ?>/logout.php" class="mobile-contact">Logout</a>
+            <?php else: ?>
+                <a href="<?= $base_url ?>/login.php" class="mobile-contact">Login</a>
+            <?php endif; ?>
+        </div>
+    </nav>
+
+    <div style="padding-top: 80px;"> <!-- Padding for fixed navbar -->
