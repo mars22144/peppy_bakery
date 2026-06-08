@@ -19,8 +19,7 @@
         <tbody>
             <tr>
                 <td>
-                    <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=50&q=80"
-                         class="table-thumb" alt="Croissant">
+                    <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=50&q=80" class="table-thumb" alt="Croissant">
                 </td>
                 <td>Classic French Croissant</td>
                 <td>Rp 35.000</td>
@@ -33,8 +32,7 @@
             </tr>
             <tr>
                 <td>
-                    <img src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=50&q=80"
-                         class="table-thumb" alt="Sourdough">
+                    <img src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=50&q=80" class="table-thumb" alt="Sourdough">
                 </td>
                 <td>Rustic Sourdough Loaf</td>
                 <td>Rp 65.000</td>
