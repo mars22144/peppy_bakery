@@ -1,4 +1,4 @@
-</div> <!-- End padding-top wrapper -->
+</div>
 
 <!-- FOOTER -->
 <footer class="footer">
