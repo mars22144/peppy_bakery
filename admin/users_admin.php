@@ -20,14 +20,14 @@
                 <td>Budi Santoso</td>
                 <td>budi@example.com</td>
                 <td>5 Pesanan</td>
-                <td><span style="background: #d4edda; color: #155724; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem;">Aktif</span></td>
+                <td><span class="status-pill status-pill--active">Aktif</span></td>
             </tr>
             <tr>
                 <td>USR-002</td>
                 <td>Siti Aminah</td>
                 <td>siti@example.com</td>
                 <td>2 Pesanan</td>
-                <td><span style="background: #d4edda; color: #155724; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem;">Aktif</span></td>
+                <td><span class="status-pill status-pill--active">Aktif</span></td>
             </tr>
         </tbody>
     </table>

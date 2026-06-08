@@ -1,6 +1,6 @@
 <?php include 'layouts/header.php'; ?>
 
-<section class="page-section active" style="padding-top: 100px; padding-bottom: 100px;">
+<section class="page-section active page-padded">
   <!-- PHILOSOPHY -->
   <div class="philosophy-section" id="about">
     <div class="phil-text reveal">

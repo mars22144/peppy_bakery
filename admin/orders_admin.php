@@ -22,7 +22,7 @@
                 <td>20 Mei 2026</td>
                 <td>Rp 70.000</td>
                 <td>
-                    <select style="padding: 5px; border-radius: 5px; border: 1px solid #ddd;">
+                    <select class="order-status-select">
                         <option value="diproses" selected>Diproses</option>
                         <option value="dikirim">Dikirim</option>
                         <option value="selesai">Selesai</option>
@@ -30,7 +30,7 @@
                 </td>
                 <td>
                     <button class="btn-primary btn-sm"><i class="fas fa-save"></i> Simpan</button>
-                    <button class="btn-primary btn-sm" style="background:#6c757d;"><i class="fas fa-eye"></i> Detail</button>
+                    <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> Detail</button>
                 </td>
             </tr>
             <tr>
@@ -39,7 +39,7 @@
                 <td>19 Mei 2026</td>
                 <td>Rp 125.000</td>
                 <td>
-                    <select style="padding: 5px; border-radius: 5px; border: 1px solid #ddd;">
+                    <select class="order-status-select">
                         <option value="diproses">Diproses</option>
                         <option value="dikirim">Dikirim</option>
                         <option value="selesai" selected>Selesai</option>
@@ -47,7 +47,7 @@
                 </td>
                 <td>
                     <button class="btn-primary btn-sm"><i class="fas fa-save"></i> Simpan</button>
-                    <button class="btn-primary btn-sm" style="background:#6c757d;"><i class="fas fa-eye"></i> Detail</button>
+                    <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> Detail</button>
                 </td>
             </tr>
         </tbody>

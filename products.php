@@ -7,7 +7,7 @@
     <div class="product-header reveal">
       <span class="prod-label">OUR DAILY BAKE</span>
       <h1 class="prod-title">DAFTAR<br><span>MENU</span></h1>
-      <p>Each loaf at Peppy Bakery is a testament to the slow art of fermentation. We use only stone‑ground heritage grains and natural leavens, baked daily in our wood‑fired oven to achieve that signature shattering crust and airy, aromatic crumb.</p>
+      <p>Each loaf at Peppy Bakery is a testament to the slow art of fermentation. We use only stone ground heritage grains and natural leavens, baked daily in our wood fired oven to achieve that signature shattering crust and airy, aromatic crumb.</p>
     </div>
 
     <div class="product-grid">
@@ -34,7 +34,7 @@
         </div>
         <div class="prod-info">
           <h3>Rustic Sourdough Loaf</h3>
-          <p>Our signature 48‑hour fermented loaf with a dark, blistered crust and a tangy, custard‑like crumb.</p>
+          <p>Our signature 48 hour fermented loaf with a dark, blistered crust and a tangy, custard like crumb.</p>
           <span class="prod-price orange" style="font-weight: 700; color: #d97706;">Rp 65.000</span>
           <br>
           <a href="product_detail.php?id=2" class="btn-primary ripple-btn" style="text-decoration:none; display:inline-block; margin-top: 15px; padding: 8px 16px; font-size: 0.9rem;">Pesan</a>
@@ -88,7 +88,7 @@
     <div class="custom-orders reveal" style="margin-top: 50px;">
       <div class="co-text">
         <h3>Custom Orders</h3>
-        <p>Planning a special event or need a large catering batch? We hand‑bake custom orders with 48 hours' notice.</p>
+        <p>Planning a special event or need a large catering batch? We hand bake custom orders with 48 hours' notice.</p>
       </div>
       <button class="btn-dark ripple-btn">Inquire Now →</button>
     </div>

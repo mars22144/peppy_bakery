@@ -7,7 +7,7 @@
   <div class="hero">
     <div class="hero-content reveal">
       <h1 class="hero-title">Selamat datang di<br><span class="hero-highlight">Peppy Bakery's</span></h1>
-      <p class="hero-sub">Kami menghadirkan kehangatan roti artisan yang dibuat dengan tangan, menggunakan bahan‑bahan pilihan untuk momen spesial Anda setiap hari</p>
+      <p class="hero-sub">Kami menghadirkan kehangatan roti artisan yang dibuat dengan tangan, menggunakan bahan - bahan pilihan untuk momen spesial Anda setiap hari</p>
       <a href="products.php" class="btn-primary ripple-btn" style="display:inline-block; text-decoration:none;">Beli Sekarang!</a>
     </div>
     <div class="hero-image reveal delay-2">

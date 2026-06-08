@@ -1,6 +1,8 @@
 <?php include 'layouts/admin_header.php'; ?>
 
-<h2 style="margin-bottom: 20px;">Dashboard Overview</h2>
+<div class="header-place">
+    <h2 class="header-dashboard">Dashboard Overview</h2>
+</div>
 
 <div class="card-grid">
     <div class="stat-card">
@@ -54,14 +56,14 @@
                 <td>Budi Santoso</td>
                 <td>20 Mei 2026</td>
                 <td>Rp 70.000</td>
-                <td><span style="background: #fff3cd; color: #856404; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem;">Diproses</span></td>
+                <td><span class="status-pill status-pill--processing">Diproses</span></td>
             </tr>
             <tr>
                 <td>#ORD-1000</td>
                 <td>Siti Aminah</td>
                 <td>19 Mei 2026</td>
                 <td>Rp 125.000</td>
-                <td><span style="background: #d4edda; color: #155724; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem;">Selesai</span></td>
+                <td><span class="status-pill status-pill--done">Selesai</span></td>
             </tr>
         </tbody>
     </table>
