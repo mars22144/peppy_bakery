@@ -1,23 +1,46 @@
 <?php
 require_once 'config/database.php';
 
-// ── Handle Add to Cart (POST) ─────────────────────────────────────────────
+// ── Handle POST actions (Add to Cart / Submit Review) ──────────────────────
 if (session_status() === PHP_SESSION_NONE) session_start();
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_to_cart') {
-    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
-        header('Location: login.php'); exit;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    $action = $_POST['action'];
+    $pdo = getDB();
+
+    if ($action === 'add_to_cart') {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
+            header('Location: login.php'); exit;
+        }
+        $pid = (int)($_POST['product_id'] ?? 0);
+        $qty = max(1, (int)($_POST['qty'] ?? 1));
+        if ($pid > 0) {
+            if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
+            if (isset($_SESSION['cart'][$pid])) {
+                $_SESSION['cart'][$pid] += $qty;
+            } else {
+                $_SESSION['cart'][$pid] = $qty;
+            }
+        }
+        header('Location: cart.php'); exit;
     }
-    $pid = (int)($_POST['product_id'] ?? 0);
-    $qty = max(1, (int)($_POST['qty'] ?? 1));
-    if ($pid > 0) {
-        if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
-        if (isset($_SESSION['cart'][$pid])) {
-            $_SESSION['cart'][$pid] += $qty;
-        } else {
-            $_SESSION['cart'][$pid] = $qty;
+
+    if ($action === 'submit_review') {
+        if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
+            header('Location: login.php'); exit;
+        }
+        $pid      = (int)($_POST['product_id'] ?? 0);
+        $rating   = min(5, max(1, (int)($_POST['rating'] ?? 5)));
+        $komentar = trim($_POST['komentar'] ?? '');
+
+        if ($pid > 0 && !empty($komentar)) {
+            $ins_rev = $pdo->prepare('
+                INSERT INTO reviews (id_user, id_produk, rating, komentar, tgl_review) 
+                VALUES (?, ?, ?, ?, NOW())
+            ');
+            $ins_rev->execute([$_SESSION['user_id'], $pid, $rating, $komentar]);
+            header("Location: product_detail.php?id=$pid&review_success=1"); exit;
         }
     }
-    header('Location: cart.php'); exit;
 }
 
 include 'layouts/header.php';
@@ -30,6 +53,56 @@ $stmt = $pdo->prepare('SELECT * FROM products WHERE id_produk = ? LIMIT 1');
 $stmt->execute([$product_id]);
 $db_product = $stmt->fetch();
 
+// Fetch reviews from DB
+$rev_stmt = $pdo->prepare('
+    SELECT r.*, u.nama AS user_name 
+    FROM reviews r 
+    JOIN users u ON r.id_user = u.id_user 
+    WHERE r.id_produk = ? 
+    ORDER BY r.tgl_review DESC
+');
+$rev_stmt->execute([$product_id]);
+$db_reviews = $rev_stmt->fetchAll();
+
+// Calculate review metrics
+$review_count = count($db_reviews);
+$total_rating = 0;
+$rating_counts = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
+$mapped_reviews = [];
+
+foreach ($db_reviews as $rev) {
+    $total_rating += $rev['rating'];
+    if (isset($rating_counts[$rev['rating']])) {
+        $rating_counts[$rev['rating']]++;
+    }
+    
+    // Check if this specific reviewer purchased the product
+    $rev_purchased_stmt = $pdo->prepare('
+        SELECT COUNT(*) FROM order_details od
+        JOIN orders o ON od.id_order = o.id_order
+        WHERE o.id_user = ? AND od.id_produk = ?
+    ');
+    $rev_purchased_stmt->execute([$rev['id_user'], $product_id]);
+    $is_verified = $rev_purchased_stmt->fetchColumn() > 0;
+
+    $mapped_reviews[] = [
+        'name'        => $rev['user_name'],
+        'date'        => date('d M Y, H:i', strtotime($rev['tgl_review'])),
+        'rating'      => (int)$rev['rating'],
+        'text'        => $rev['komentar'],
+        'is_verified' => $is_verified
+    ];
+}
+
+$average_rating = $review_count > 0 ? round($total_rating / $review_count, 1) : 0;
+
+$rating_bars = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
+if ($review_count > 0) {
+    foreach ($rating_counts as $star => $count) {
+        $rating_bars[$star] = round(($count / $review_count) * 100);
+    }
+}
+
 // Merge DB data with static details (DB is source of truth for name/price/stock/image)
 $s = $static[$product_id] ?? [
     'label'=>'PRODUK','unit'=>'/ buah','rating'=>4.5,'review_count'=>0,
@@ -39,13 +112,20 @@ $s = $static[$product_id] ?? [
 
 if ($db_product) {
     $p = array_merge($s, [
-        'id'        => $db_product['id_produk'],
-        'name'      => $db_product['nama_produk'],
-        'price'     => $db_product['harga'],
-        'price_fmt' => 'Rp ' . number_format($db_product['harga'], 0, ',', '.'),
-        'stock'     => $db_product['stok'],
-        'image'     => $db_product['foto'] ?: ($s['thumbs'][0] ?? ''),
-        'short_desc'=> $db_product['deskripsi'],
+        'id'           => $db_product['id_produk'],
+        'name'         => $db_product['nama_produk'],
+        'price'        => $db_product['harga'],
+        'price_fmt'    => 'Rp ' . number_format($db_product['harga'], 0, ',', '.'),
+        'stock'        => $db_product['stok'],
+        'image'        => $db_product['foto'] ?: ($s['thumbs'][0] ?? ''),
+        'short_desc'   => $db_product['deskripsi'],
+        'long_desc'    => $db_product['deskripsi'],
+        'weight'       => $db_product['berat'] ?: '-',
+        'shelf_life'   => $db_product['ketahanan'] ?: '-',
+        'rating'       => $review_count > 0 ? $average_rating : 0,
+        'review_count' => $review_count,
+        'reviews'      => $mapped_reviews,
+        'rating_bars'  => $rating_bars,
     ]);
 } else {
     // Redirect if product not found
@@ -186,11 +266,11 @@ $related = array_map(fn($r) => [
                 <input type="hidden" name="qty" id="formQty" value="1">
                 <button type="submit" name="action" value="add_to_cart"
                   class="btn-primary ripple-btn">
-                  🛒 Tambah ke Keranjang
+                  Tambah ke Keranjang
                 </button>
                 <button type="submit" name="action" value="buy_now"
                   class="btn-dark ripple-btn btn-dark-centered">
-                  Beli Sekarang →
+                  Beli Sekarang
                 </button>
               </form>
             </div>
@@ -209,7 +289,6 @@ $related = array_map(fn($r) => [
     <div class="detail-tabs reveal">
       <div class="tab-nav">
         <button class="tab-btn active" onclick="showTab('deskripsi', this)">Deskripsi</button>
-        <button class="tab-btn" onclick="showTab('penyimpanan', this)">Cara Penyimpanan</button>
         <button class="tab-btn" onclick="showTab('ulasan', this)">
           Ulasan (<?= $p['review_count'] ?>)
         </button>
@@ -218,12 +297,10 @@ $related = array_map(fn($r) => [
       <!-- Tab: Deskripsi -->
       <div id="tab-deskripsi" class="tab-pane active">
         <div class="detail-description">
-          <?php foreach (explode("\n\n", $p['long_desc']) as $para): ?>
-            <p><?= htmlspecialchars(trim($para)) ?></p>
-          <?php endforeach; ?>
           <div class="detail-ingredients">
-            <h4>🌾 Bahan-bahan</h4>
-            <p><?= htmlspecialchars($p['ingredients']) ?></p>
+            <p><?php foreach (explode("\n\n", $p['long_desc']) as $para): ?>
+            <p><?= htmlspecialchars(trim($para)) ?></p>
+          <?php endforeach; ?></p>
           </div>
         </div>
       </div>
@@ -245,12 +322,24 @@ $related = array_map(fn($r) => [
 
       <!-- Tab: Ulasan -->
       <div id="tab-ulasan" class="tab-pane">
+        <?php if (isset($_GET['review_success'])): ?>
+          <div style="background:#e8f5e9; color:#2e7d32; border:1px solid #a5d6a7; padding:12px 16px; border-radius:8px; margin-bottom:20px; font-size:0.9rem;">
+            ✓ Ulasan Anda berhasil dikirim! Terima kasih atas masukan Anda.
+          </div>
+        <?php endif; ?>
 
         <!-- Rating Summary -->
         <div class="reviews-summary">
           <div class="reviews-score">
             <div class="reviews-score-num"><?= $p['rating'] ?></div>
-            <div class="reviews-score-stars">★★★★★</div>
+            <div class="reviews-score-stars" style="color: #f5a623;">
+              <?php
+              $full  = floor($p['rating']);
+              $half  = ($p['rating'] - $full) >= 0.5 ? 1 : 0;
+              $empty = 5 - $full - $half;
+              echo str_repeat('★', $full) . ($half ? '½' : '') . str_repeat('☆', $empty);
+              ?>
+            </div>
             <div class="reviews-score-count"><?= $p['review_count'] ?> ulasan</div>
           </div>
           <div class="reviews-bars">
@@ -267,6 +356,38 @@ $related = array_map(fn($r) => [
           </div>
         </div>
 
+        <!-- Write Review Form -->
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'customer'): ?>
+          <div class="write-review-box" style="background:#fffaf4; border:1px solid rgba(232,119,34,0.15); border-radius:12px; padding:20px; margin-bottom:30px;">
+            <h4 style="margin-bottom:12px; color:var(--dark); font-family:'Ubuntu', sans-serif;">Tulis Ulasan Anda</h4>
+            <form action="product_detail.php?id=<?= $product_id ?>" method="POST">
+              <input type="hidden" name="action" value="submit_review">
+              <input type="hidden" name="product_id" value="<?= $product_id ?>">
+              
+              <div style="margin-bottom:12px;">
+                <label style="display:block; margin-bottom:6px; font-size:0.9rem; font-weight:600; color:#555;">Rating</label>
+                <div class="star-rating-select" style="display:flex; gap:6px; font-size:1.5rem; color:#f5a623; cursor:pointer;">
+                  <?php for ($i = 1; $i <= 5; $i++): ?>
+                    <span class="star-option" data-value="<?= $i ?>" onclick="setRating(<?= $i ?>)" style="transition: transform 0.2s;">☆</span>
+                  <?php endfor; ?>
+                </div>
+                <input type="hidden" name="rating" id="reviewRatingInput" value="5">
+              </div>
+
+              <div style="margin-bottom:15px;">
+                <label style="display:block; margin-bottom:6px; font-size:0.9rem; font-weight:600; color:#555;">Komentar</label>
+                <textarea name="komentar" required placeholder="Tulis ulasan jujur Anda di sini..." style="width:100%; border:1px solid #ddd; border-radius:8px; padding:12px; font-size:0.92rem; outline:none; font-family:inherit; min-height:80px; resize:vertical;"></textarea>
+              </div>
+
+              <button type="submit" class="btn-primary ripple-btn" style="padding:10px 20px; font-size:0.9rem; border:none; border-radius:8px; cursor:pointer;">Kirim Ulasan</button>
+            </form>
+          </div>
+        <?php else: ?>
+          <div style="background:#f9f9f9; border-radius:12px; padding:16px; text-align:center; color:#777; margin-bottom:30px; font-size:0.9rem;">
+            Silakan <a href="login.php" style="color:var(--orange); font-weight:700;">login sebagai customer</a> untuk menulis ulasan produk ini.
+          </div>
+        <?php endif; ?>
+
         <!-- Review Cards -->
         <div class="review-list">
           <?php foreach ($p['reviews'] as $r): ?>
@@ -275,7 +396,14 @@ $related = array_map(fn($r) => [
                 <div class="review-author">
                   <div class="review-avatar"><?= strtoupper($r['name'][0]) ?></div>
                   <div>
-                    <div class="review-name"><?= htmlspecialchars($r['name']) ?></div>
+                    <div class="review-name">
+                      <?= htmlspecialchars($r['name']) ?>
+                      <?php if ($r['is_verified']): ?>
+                        <span class="verified-badge" style="background:#e2f5e2; color:#2e7d32; font-size:0.7rem; font-weight:700; padding:2px 6px; border-radius:4px; margin-left:6px; display:inline-block; border:1px solid #bce2bc;">
+                          ✓ Terverifikasi
+                        </span>
+                      <?php endif; ?>
+                    </div>
                     <div class="review-date"><?= $r['date'] ?></div>
                   </div>
                 </div>
@@ -286,6 +414,9 @@ $related = array_map(fn($r) => [
               <p class="review-text"><?= htmlspecialchars($r['text']) ?></p>
             </div>
           <?php endforeach; ?>
+          <?php if (empty($p['reviews'])): ?>
+            <p style="text-align:center; color:#aaa; padding:20px 0;">Belum ada ulasan untuk produk ini.</p>
+          <?php endif; ?>
         </div>
 
       </div><!-- /tab-ulasan -->
@@ -354,6 +485,24 @@ $related = array_map(fn($r) => [
     btn.classList.toggle('active');
     btn.innerHTML = btn.classList.contains('active') ? '♥' : '♡';
   }
+
+  // === RATING STAR SELECTOR ===
+  function setRating(val) {
+    const input = document.getElementById('reviewRatingInput');
+    if (input) input.value = val;
+    const stars = document.querySelectorAll('.star-option');
+    stars.forEach((star, index) => {
+      if (index < val) {
+        star.innerHTML = '★';
+      } else {
+        star.innerHTML = '☆';
+      }
+    });
+  }
+  // Initialize default rating stars on load
+  document.addEventListener('DOMContentLoaded', () => {
+    setRating(5);
+  });
 </script>
 
 <?php include 'layouts/footer.php'; ?>
