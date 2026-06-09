@@ -222,6 +222,8 @@ img {
 .ripple-btn {
   position: relative;
   overflow: hidden;
+  text-align: center;
+  text-decoration: none;
 }
 
 .ripple-btn .ripple {
