@@ -19,6 +19,8 @@ if (isset($_POST['action']) && $_POST['action'] === 'create') {
     $price       = (float)($_POST['price'] ?? 0);
     $stock       = (int)($_POST['stock'] ?? 0);
     $image_url   = trim($_POST['image_url'] ?? '');
+    $berat       = trim($_POST['berat'] ?? '');
+    $ketahanan   = trim($_POST['ketahanan'] ?? '');
 
     // Handle file upload
     if (!empty($_FILES['image_file']['name'])) {
@@ -31,8 +33,8 @@ if (isset($_POST['action']) && $_POST['action'] === 'create') {
         }
     }
 
-    $pdo->prepare('INSERT INTO products (nama_produk, deskripsi, harga, stok, foto) VALUES (?,?,?,?,?)')
-        ->execute([$name, $description, $price, $stock, $image_url]);
+    $pdo->prepare('INSERT INTO products (nama_produk, deskripsi, harga, stok, foto, berat, ketahanan) VALUES (?,?,?,?,?,?,?)')
+        ->execute([$name, $description, $price, $stock, $image_url, $berat, $ketahanan]);
     $msg = 'Produk berhasil ditambahkan.';
 }
 
@@ -44,6 +46,8 @@ if (isset($_POST['action']) && $_POST['action'] === 'update') {
     $price       = (float)($_POST['price'] ?? 0);
     $stock       = (int)($_POST['stock'] ?? 0);
     $image_url   = trim($_POST['image_url'] ?? '');
+    $berat       = trim($_POST['berat'] ?? '');
+    $ketahanan   = trim($_POST['ketahanan'] ?? '');
 
     // Handle file upload
     if (!empty($_FILES['image_file']['name'])) {
@@ -57,11 +61,11 @@ if (isset($_POST['action']) && $_POST['action'] === 'update') {
     }
 
     if ($image_url) {
-        $pdo->prepare('UPDATE products SET nama_produk=?, deskripsi=?, harga=?, stok=?, foto=? WHERE id_produk=?')
-            ->execute([$name, $description, $price, $stock, $image_url, $id]);
+        $pdo->prepare('UPDATE products SET nama_produk=?, deskripsi=?, harga=?, stok=?, foto=?, berat=?, ketahanan=? WHERE id_produk=?')
+            ->execute([$name, $description, $price, $stock, $image_url, $berat, $ketahanan, $id]);
     } else {
-        $pdo->prepare('UPDATE products SET nama_produk=?, deskripsi=?, harga=?, stok=? WHERE id_produk=?')
-            ->execute([$name, $description, $price, $stock, $id]);
+        $pdo->prepare('UPDATE products SET nama_produk=?, deskripsi=?, harga=?, stok=?, berat=?, ketahanan=? WHERE id_produk=?')
+            ->execute([$name, $description, $price, $stock, $berat, $ketahanan, $id]);
     }
     $msg = 'Produk berhasil diperbarui.';
 }
@@ -165,6 +169,16 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
                     <input type="number" name="stock" required min="0" class="auth-input" placeholder="10">
                 </div>
             </div>
+            <div class="modal-row">
+                <div class="modal-form-group">
+                    <label>Berat (misal: 250gr, 1kg)</label>
+                    <input type="text" name="berat" class="auth-input" placeholder="250gr">
+                </div>
+                <div class="modal-form-group">
+                    <label>Ketahanan (misal: 3 hari)</label>
+                    <input type="text" name="ketahanan" class="auth-input" placeholder="3 hari pada suhu ruang">
+                </div>
+            </div>
             <div class="modal-form-group">
                 <label>URL Gambar (opsional jika upload)</label>
                 <input type="text" name="image_url" class="auth-input" placeholder="https://...">
@@ -212,6 +226,16 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
                     <input type="number" name="stock" id="edit-stock" required min="0" class="auth-input">
                 </div>
             </div>
+            <div class="modal-row">
+                <div class="modal-form-group">
+                    <label>Berat</label>
+                    <input type="text" name="berat" id="edit-berat" class="auth-input">
+                </div>
+                <div class="modal-form-group">
+                    <label>Ketahanan</label>
+                    <input type="text" name="ketahanan" id="edit-ketahanan" class="auth-input">
+                </div>
+            </div>
             <div class="modal-form-group">
                 <label>URL Gambar (kosongkan jika tidak berubah)</label>
                 <input type="text" name="image_url" id="edit-image-url" class="auth-input">
@@ -245,6 +269,8 @@ function openEditModal(p) {
     document.getElementById('edit-price').value       = p.harga;
     document.getElementById('edit-stock').value       = p.stok;
     document.getElementById('edit-image-url').value   = p.foto || '';
+    document.getElementById('edit-berat').value       = p.berat || '';
+    document.getElementById('edit-ketahanan').value   = p.ketahanan || '';
     openModal('modal-edit');
 }
 // Close modal on overlay click
