@@ -188,11 +188,12 @@ $related = array_map(fn($r) => [
                   class="btn-primary ripple-btn">
                   🛒 Tambah ke Keranjang
                 </button>
+                <button type="submit" name="action" value="buy_now"
+                  class="btn-dark ripple-btn btn-dark-centered">
+                  Beli Sekarang →
+                </button>
               </form>
             </div>
-            <a href="checkout.php" class="btn-dark ripple-btn" class="btn-dark-centered">
-              Beli Sekarang →
-            </a>
           <?php else: ?>
             <div class="detail-login-notice">
               <span>🔒</span>

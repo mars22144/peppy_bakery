@@ -24,7 +24,7 @@ body {
 
 .header-place {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 .header-dashboard {
@@ -189,6 +189,29 @@ th {
 .btn-sm {
     padding: 5px 10px;
     font-size: 0.8rem;
+}
+
+.btn-sm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+thead tr th{
+    text-align: center;
+}
+
+tbody tr td{
+    text-align: center;
+}
+
+tr th{
+    border: 1px solid #ccc;
+}
+
+td{
+    border: 1px solid #ccc;
 }
 
 .btn-danger {

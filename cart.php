@@ -9,6 +9,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
 
 $pdo = getDB();
 
+// Clear direct buy session on regular page loads (GET requests)
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    unset($_SESSION['direct_buy']);
+}
+
 // ── Handle cart actions ───────────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
@@ -26,6 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $_SESSION['cart'][$pid] = $qty;
             }
+        }
+    }
+    // Buy now (Direct purchase)
+    if ($action === 'buy_now') {
+        $pid = (int)($_POST['product_id'] ?? 0);
+        $qty = max(1, (int)($_POST['qty'] ?? 1));
+        if ($pid > 0) {
+            $_SESSION['direct_buy'] = [
+                $pid => $qty
+            ];
+            header('Location: checkout.php'); exit;
         }
     }
     // Update quantity

@@ -56,7 +56,7 @@ $orders = $pdo->query(
                 $sc = $status_map[$o['status_order']] ?? '';
             ?>
             <tr>
-                <td>#ORD-<?= str_pad($o['id_order'], 4, '0', STR_PAD_LEFT) ?></td>
+                <td>#ORD-<?= str_pad($o['id_order'], 5, '0', STR_PAD_LEFT) ?></td>
                 <td>
                     <?= htmlspecialchars($o['customer_name']) ?>
                     <br><small style="color:#aaa;"><?= htmlspecialchars($o['customer_email']) ?></small>
@@ -78,7 +78,7 @@ $orders = $pdo->query(
                 </td>
                 <td>
                     <a href="order_detail_admin.php?id=<?= $o['id_order'] ?>" class="btn-secondary btn-sm">
-                        <i class="fas fa-eye"></i> Detail
+                        <i class="fas fa-eye"></i>
                     </a>
                 </td>
             </tr>

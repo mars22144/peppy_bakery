@@ -1831,8 +1831,11 @@ a.btn-primary {
   flex-wrap: wrap;
 }
 
-.detail-cta-row .btn-primary {
+.detail-cta-row .btn-primary,
+.detail-cta-row .btn-dark {
   flex: 1;
+  display: flex;
+  align-items: center;
   justify-content: center;
   font-size: 1rem;
   padding: 14px 24px;
@@ -2188,7 +2191,8 @@ a.btn-primary {
     padding: 32px 0 60px;
   }
 
-  .detail-cta-row .btn-primary {
+  .detail-cta-row .btn-primary,
+  .detail-cta-row .btn-dark {
     flex: unset;
     width: 100%;
   }

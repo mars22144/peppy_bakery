@@ -51,8 +51,8 @@ $status_class = [
 ?>
 
 <div class="header-place" style="margin-bottom:20px;">
+    <h2 style="margin-top:12px;">Detail Pesanan #ORD-<?= str_pad($order['id_order'], 5, '0', STR_PAD_LEFT) ?></h2>
     <a href="orders_admin.php" class="btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
-    <h2 style="margin-top:12px;">Detail Pesanan #ORD-<?= str_pad($order['id_order'], 4, '0', STR_PAD_LEFT) ?></h2>
 </div>
 
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">

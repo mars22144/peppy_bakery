@@ -6,9 +6,10 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
     header('Location: login.php'); exit;
 }
 
-$pdo   = getDB();
-$cart  = $_SESSION['cart'] ?? [];
-$error = '';
+$pdo       = getDB();
+$is_direct = isset($_SESSION['direct_buy']) && !empty($_SESSION['direct_buy']);
+$cart      = $is_direct ? $_SESSION['direct_buy'] : ($_SESSION['cart'] ?? []);
+$error     = '';
 
 // Redirect if cart is empty
 if (empty($cart)) {
@@ -77,7 +78,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->commit();
 
             // Clear cart
-            $_SESSION['cart'] = [];
+            if ($is_direct) {
+                unset($_SESSION['direct_buy']);
+            } else {
+                $_SESSION['cart'] = [];
+            }
             header('Location: customer/orders.php?success=1'); exit;
 
         } catch (Exception $e) {
