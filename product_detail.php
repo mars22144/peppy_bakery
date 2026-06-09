@@ -30,81 +30,6 @@ $stmt = $pdo->prepare('SELECT * FROM products WHERE id_produk = ? LIMIT 1');
 $stmt->execute([$product_id]);
 $db_product = $stmt->fetch();
 
-// // Static details (reviews, thumbs, storage) — keyed by product id
-// $static = [
-//   1 => [
-//     'label'       => 'BESTSELLER',
-//     'unit'        => '/ buah',
-//     'rating'      => 4.9,
-//     'review_count' => 128,
-//     'weight'      => '85 gram',
-//     'shelf_life'  => '2–3 hari',
-//     'thumbs'      => [
-//       'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=80',
-//       'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?w=200&q=80',
-//       'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=80',
-//     ],
-//     'long_desc'   => "Croissant kami dibuat melalui proses laminasi tiga hari dengan 27 lapisan mentega Normandy pilihan. Setiap gigitan menghasilkan suara renyah khas yang diikuti tekstur lembut dan beraroma butter intens.\n\nAdonan diistirahatkan semalam di suhu dingin untuk mengembangkan kompleksitas rasa, kemudian dipanggang dalam oven batu bersuhu tinggi hingga berwarna coklat keemasan sempurna.",
-//     'ingredients' => 'Tepung terigu protein tinggi, mentega Normandy 84% fat, susu segar, gula, garam laut, ragi alami.',
-//     'storage'     => [
-//       ['icon' => '🌡️', 'title' => 'Suhu Ruang',  'desc' => 'Simpan dalam wadah kedap udara, tahan 2–3 hari.'],
-//       ['icon' => '❄️', 'title' => 'Kulkas',       'desc' => 'Bungkus rapat, tahan hingga 5 hari. Hangatkan 3 menit di oven 160°C sebelum disajikan.'],
-//       ['icon' => '🧊', 'title' => 'Freezer',      'desc' => 'Dapat disimpan hingga 1 bulan. Thaw semalam di kulkas, lalu panaskan di oven.'],
-//       ['icon' => '☀️', 'title' => 'Tips Sajian',  'desc' => 'Paling nikmat disajikan hangat dalam 30 menit setelah dipanggang ulang.'],
-//     ],
-//     'reviews'     => [
-//       ['name' => 'Siti R.',    'rating' => 5, 'date' => '3 hari lalu',   'text' => 'Croissant terenak yang pernah saya coba! Renyah di luar, lembut di dalam. Aroma butternya luar biasa. Pasti order lagi!'],
-//       ['name' => 'Budi S.',    'rating' => 5, 'date' => '1 minggu lalu', 'text' => 'Kualitas bakery premium, harga terjangkau. Pengiriman juga cepat dan roti masih fresh waktu sampai.'],
-//       ['name' => 'Dewi L.',    'rating' => 4, 'date' => '2 minggu lalu', 'text' => 'Enak banget! Cuma sayang sedikit terlalu manis buat selera saya. Tapi tetap worth it sih untuk kualitas segini.'],
-//     ],
-//     'rating_bars' => [5 => 85, 4 => 10, 3 => 3, 2 => 1, 1 => 1],
-//   ],
-//   2 => [
-//     'label'       => 'SIGNATURE',
-//     'unit'        => '/ loaf',
-//     'rating'      => 4.8,
-//     'review_count' => 96,
-//     'weight'      => '400 gram',
-//     'shelf_life'  => '4–5 hari',
-//     'thumbs'      => [
-//       'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=200&q=80',
-//       'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200&q=80',
-//     ],
-//     'long_desc'   => "Sourdough loaf kami difermentasi selama 48 jam menggunakan starter ragi alami yang sudah berusia 3 tahun. Proses fermentasi lambat ini menghasilkan cita rasa yang kompleks.\n\nDipanggang dalam dutch oven batu untuk menghasilkan kulit yang gelap, melepuh, dan retakan alami yang khas.",
-//     'ingredients' => 'Tepung gandum stone-ground, air, garam laut, ragi alami (starter sourdough).',
-//     'storage'     => [
-//       ['icon' => '🌡️', 'title' => 'Suhu Ruang',  'desc' => 'Simpan terbungkus kain linen bersih, tahan 4–5 hari.'],
-//       ['icon' => '❄️', 'title' => 'Kulkas',       'desc' => 'Tidak disarankan — kulkas membuat sourdough cepat basi.'],
-//       ['icon' => '🧊', 'title' => 'Freezer',      'desc' => 'Iris dulu sebelum dibekukan. Panggang langsung dari frozen di 200°C selama 5–8 menit.'],
-//       ['icon' => '🔪', 'title' => 'Tips Potong',  'desc' => 'Tunggu minimal 1 jam setelah dipanggang sebelum diiris agar crumb tidak kempes.'],
-//     ],
-//     'reviews'     => [
-//       ['name' => 'Ahmad K.', 'rating' => 5, 'date' => '5 hari lalu',   'text' => 'Sourdough autentik! Asam-manisnya pas, kulit luarnya beneran renyah.'],
-//       ['name' => 'Nina P.',  'rating' => 5, 'date' => '1 minggu lalu', 'text' => 'Sudah langganan setiap minggu. Rotinya konsisten enak dan fresh setiap kali order.'],
-//     ],
-//     'rating_bars' => [5 => 88, 4 => 8, 3 => 3, 2 => 1, 1 => 0],
-//   ],
-//   3 => [
-//     'label'       => 'FAVORIT',
-//     'unit'        => '/ buah',
-//     'rating'      => 4.7,
-//     'review_count' => 74,
-//     'weight'      => '90 gram',
-//     'shelf_life'  => '2–3 hari',
-//     'thumbs'      => ['https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?w=200&q=80'],
-//     'long_desc'   => 'Pain au Chocolat kami menggunakan dua batang coklat Valrhona 70% yang dibalut adonan laminasi butter Normandy. Diproses tiga hari seperti croissant kami.',
-//     'ingredients' => 'Tepung terigu, mentega Normandy 84%, coklat Valrhona 70%, susu, gula, garam, ragi alami.',
-//     'storage'     => [
-//       ['icon' => '🌡️', 'title' => 'Suhu Ruang', 'desc' => 'Simpan dalam wadah tertutup, tahan 2–3 hari.'],
-//       ['icon' => '❄️', 'title' => 'Kulkas',      'desc' => 'Bungkus rapat, tahan 5 hari. Hangatkan 3 menit di oven 160°C.'],
-//     ],
-//     'reviews'     => [
-//       ['name' => 'Rini W.', 'rating' => 5, 'date' => '2 hari lalu', 'text' => 'Coklat Valrhona-nya kerasa banget! Adonannya lembut dan berlapis sempurna.'],
-//     ],
-//     'rating_bars' => [5 => 80, 4 => 14, 3 => 4, 2 => 1, 1 => 1],
-//   ],
-// ];
-
 // Merge DB data with static details (DB is source of truth for name/price/stock/image)
 $s = $static[$product_id] ?? [
     'label'=>'PRODUK','unit'=>'/ buah','rating'=>4.5,'review_count'=>0,
@@ -247,7 +172,7 @@ $related = array_map(fn($r) => [
           <div class="detail-qty-row">
             <span class="detail-qty-label">Jumlah</span>
             <div class="detail-qty-control">
-              <button class="detail-qty-btn" onclick="changeQty(-1)" type="button">−</button>
+              <button class="detail-qty-btn" onclick="changeQty(-1)" type="button">-</button>
               <input type="number" id="qtyInput" class="detail-qty-input"
                 value="1" min="1" max="<?= $p['stock'] ?>">
               <button class="detail-qty-btn" onclick="changeQty(1)" type="button">+</button>
@@ -264,8 +189,6 @@ $related = array_map(fn($r) => [
                   🛒 Tambah ke Keranjang
                 </button>
               </form>
-              <button class="btn-wishlist" id="wishlistBtn" onclick="toggleWishlist(this)" type="button"
-                title="Simpan ke wishlist">♡</button>
             </div>
             <a href="checkout.php" class="btn-dark ripple-btn" class="btn-dark-centered">
               Beli Sekarang →
