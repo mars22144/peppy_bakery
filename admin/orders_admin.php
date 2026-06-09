@@ -1,4 +1,33 @@
-<?php include 'layouts/admin_header.php'; ?>
+<?php
+require_once '../config/database.php';
+include 'layouts/admin_header.php';
+
+$pdo = getDB();
+$msg = '';
+
+// ── UPDATE STATUS ────────────────────────────────────────────────────────────
+if (isset($_POST['action']) && $_POST['action'] === 'update_status') {
+    $id     = (int)($_POST['id'] ?? 0);
+    $status = $_POST['status'] ?? '';
+    $allowed = ['diproses', 'dikirim', 'selesai', 'dibatalkan'];
+    if ($id && in_array($status, $allowed)) {
+        $pdo->prepare('UPDATE orders SET status_order = ? WHERE id_order = ?')->execute([$status, $id]);
+        $msg = 'Status pesanan berhasil diperbarui.';
+    }
+}
+
+// ── FETCH ORDERS ─────────────────────────────────────────────────────────────
+$orders = $pdo->query(
+    'SELECT o.*, u.nama AS customer_name, u.email AS customer_email
+    FROM orders o
+    JOIN users u ON u.id_user = o.id_user
+    ORDER BY o.tgl_order DESC'
+)->fetchAll();
+?>
+
+<?php if ($msg): ?>
+    <div class="admin-alert admin-alert--success"><?= htmlspecialchars($msg) ?></div>
+<?php endif; ?>
 
 <div class="table-container">
     <div class="table-header">
@@ -16,40 +45,47 @@
             </tr>
         </thead>
         <tbody>
+            <?php foreach ($orders as $o): ?>
+            <?php
+                $status_map = [
+                    'diproses'   => 'status-pill--processing',
+                    'dikirim'    => 'status-pill--shipped',
+                    'selesai'    => 'status-pill--done',
+                    'dibatalkan' => 'status-pill--cancelled',
+                ];
+                $sc = $status_map[$o['status_order']] ?? '';
+            ?>
             <tr>
-                <td>#ORD-1001</td>
-                <td>Budi Santoso</td>
-                <td>20 Mei 2026</td>
-                <td>Rp 70.000</td>
+                <td>#ORD-<?= str_pad($o['id_order'], 4, '0', STR_PAD_LEFT) ?></td>
                 <td>
-                    <select class="order-status-select">
-                        <option value="diproses" selected>Diproses</option>
-                        <option value="dikirim">Dikirim</option>
-                        <option value="selesai">Selesai</option>
-                    </select>
+                    <?= htmlspecialchars($o['customer_name']) ?>
+                    <br><small style="color:#aaa;"><?= htmlspecialchars($o['customer_email']) ?></small>
+                </td>
+                <td><?= date('d M Y', strtotime($o['tgl_order'])) ?></td>
+                <td>Rp <?= number_format($o['ttl_harga'], 0, ',', '.') ?></td>
+                <td>
+                    <form method="POST" style="display:inline-flex;align-items:center;gap:6px;">
+                        <input type="hidden" name="action" value="update_status">
+                        <input type="hidden" name="id" value="<?= $o['id_order'] ?>">
+                        <select name="status" class="order-status-select">
+                            <option value="diproses"   <?= $o['status_order']==='diproses'   ? 'selected':'' ?>>Diproses</option>
+                            <option value="dikirim"    <?= $o['status_order']==='dikirim'    ? 'selected':'' ?>>Dikirim</option>
+                            <option value="selesai"    <?= $o['status_order']==='selesai'    ? 'selected':'' ?>>Selesai</option>
+                            <option value="dibatalkan" <?= $o['status_order']==='dibatalkan' ? 'selected':'' ?>>Dibatalkan</option>
+                        </select>
+                        <button type="submit" class="btn-primary btn-sm"><i class="fas fa-save"></i></button>
+                    </form>
                 </td>
                 <td>
-                    <button class="btn-primary btn-sm"><i class="fas fa-save"></i> Simpan</button>
-                    <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> Detail</button>
+                    <a href="order_detail_admin.php?id=<?= $o['id_order'] ?>" class="btn-secondary btn-sm">
+                        <i class="fas fa-eye"></i> Detail
+                    </a>
                 </td>
             </tr>
-            <tr>
-                <td>#ORD-1000</td>
-                <td>Siti Aminah</td>
-                <td>19 Mei 2026</td>
-                <td>Rp 125.000</td>
-                <td>
-                    <select class="order-status-select">
-                        <option value="diproses">Diproses</option>
-                        <option value="dikirim">Dikirim</option>
-                        <option value="selesai" selected>Selesai</option>
-                    </select>
-                </td>
-                <td>
-                    <button class="btn-primary btn-sm"><i class="fas fa-save"></i> Simpan</button>
-                    <button class="btn-secondary btn-sm"><i class="fas fa-eye"></i> Detail</button>
-                </td>
-            </tr>
+            <?php endforeach; ?>
+            <?php if (empty($orders)): ?>
+            <tr><td colspan="6" style="text-align:center;color:#aaa;">Belum ada pesanan.</td></tr>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>
