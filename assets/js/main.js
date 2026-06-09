@@ -1,3 +1,13 @@
+// active link
+const current_url = window.location.href
+const nav_link = document.querySelectorAll(".navbar a")
+
+nav_link.forEach(link =>{
+  if(link.href === current_url){
+    link.classList.add("active")
+  }
+})
+
 /* ===== SECTION SWITCHING ===== */
 function showSection(id) {
   document.querySelectorAll('.page-section').forEach(s => {
@@ -104,11 +114,6 @@ document.querySelectorAll('.prod-card, .featured-card').forEach(card => {
     setTimeout(() => { this.style.transition = ''; }, 500);
   });
 });
-
-/* ===== ACTIVE NAV ON SECTION SHOW ===== */
-// Initial state
-document.querySelector('[data-section="home"]')?.classList.add('active');
-
 
 // footer
 document.getElementById("year").innerHTML = new Date().getFullYear();
