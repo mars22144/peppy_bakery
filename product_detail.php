@@ -1,132 +1,156 @@
 <?php
+require_once 'config/database.php';
+
+// ── Handle Add to Cart (POST) ─────────────────────────────────────────────
+if (session_status() === PHP_SESSION_NONE) session_start();
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_to_cart') {
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
+        header('Location: login.php'); exit;
+    }
+    $pid = (int)($_POST['product_id'] ?? 0);
+    $qty = max(1, (int)($_POST['qty'] ?? 1));
+    if ($pid > 0) {
+        if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
+        if (isset($_SESSION['cart'][$pid])) {
+            $_SESSION['cart'][$pid] += $qty;
+        } else {
+            $_SESSION['cart'][$pid] = $qty;
+        }
+    }
+    header('Location: cart.php'); exit;
+}
+
 include 'layouts/header.php';
 
-// Simulasi data produk berdasarkan ID
-// Nanti diganti dengan query ke database
+$pdo        = getDB();
 $product_id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
 
-$products = [
-  1 => [
-    'id'          => 1,
-    'name'        => 'Classic French Croissant',
-    'label'       => 'BESTSELLER',
-    'price'       => 35000,
-    'price_fmt'   => 'Rp 35.000',
-    'unit'        => '/ buah',
-    'rating'      => 4.9,
-    'review_count' => 128,
-    'stock'       => 24,
-    'weight'      => '85 gram',
-    'shelf_life'  => '2–3 hari',
-    'image'       => 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&q=80',
-    'thumbs'      => [
-      'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=80',
-      'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?w=200&q=80',
-      'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=80',
-    ],
-    'short_desc'  => 'Multi-layered honeycomb structure with a shattering crust and an intense aroma of fermented French butter. Three days in the making.',
-    'long_desc'   => 'Croissant kami dibuat melalui proses laminasi tiga hari dengan 27 lapisan mentega Normandy pilihan. Setiap gigitan menghasilkan suara renyah khas yang diikuti tekstur lembut dan beraroma butter intens.
+// Fetch from DB
+$stmt = $pdo->prepare('SELECT * FROM products WHERE id_produk = ? LIMIT 1');
+$stmt->execute([$product_id]);
+$db_product = $stmt->fetch();
 
-Adonan diistirahatkan semalam di suhu dingin untuk mengembangkan kompleksitas rasa, kemudian dipanggang dalam oven batu bersuhu tinggi hingga berwarna coklat keemasan sempurna.',
-    'ingredients' => 'Tepung terigu protein tinggi, mentega Normandy 84% fat, susu segar, gula, garam laut, ragi alami.',
-    'storage'     => [
-      ['icon' => '🌡️', 'title' => 'Suhu Ruang',  'desc' => 'Simpan dalam wadah kedap udara, tahan 2–3 hari.'],
-      ['icon' => '❄️', 'title' => 'Kulkas',       'desc' => 'Bungkus rapat, tahan hingga 5 hari. Hangatkan 3 menit di oven 160°C sebelum disajikan.'],
-      ['icon' => '🧊', 'title' => 'Freezer',      'desc' => 'Dapat disimpan hingga 1 bulan. Thaw semalam di kulkas, lalu panaskan di oven.'],
-      ['icon' => '☀️', 'title' => 'Tips Sajian',  'desc' => 'Paling nikmat disajikan hangat dalam 30 menit setelah dipanggang ulang.'],
-    ],
-    'reviews'     => [
-      ['name' => 'Siti R.',    'rating' => 5, 'date' => '3 hari lalu',   'text' => 'Croissant terenak yang pernah saya coba! Renyah di luar, lembut di dalam. Aroma butternya luar biasa. Pasti order lagi!'],
-      ['name' => 'Budi S.',    'rating' => 5, 'date' => '1 minggu lalu', 'text' => 'Kualitas bakery premium, harga terjangkau. Pengiriman juga cepat dan roti masih fresh waktu sampai.'],
-      ['name' => 'Dewi L.',    'rating' => 4, 'date' => '2 minggu lalu', 'text' => 'Enak banget! Cuma sayang sedikit terlalu manis buat selera saya. Tapi tetap worth it sih untuk kualitas segini.'],
-    ],
-    'rating_bars' => [5 => 85, 4 => 10, 3 => 3, 2 => 1, 1 => 1],
-  ],
-  2 => [
-    'id'          => 2,
-    'name'        => 'Rustic Sourdough Loaf',
-    'label'       => 'SIGNATURE',
-    'price'       => 65000,
-    'price_fmt'   => 'Rp 65.000',
-    'unit'        => '/ loaf',
-    'rating'      => 4.8,
-    'review_count' => 96,
-    'stock'       => 5,
-    'weight'      => '400 gram',
-    'shelf_life'  => '4–5 hari',
-    'image'       => 'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=800&q=80',
-    'thumbs'      => [
-      'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=200&q=80',
-      'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200&q=80',
-    ],
-    'short_desc'  => 'Our signature 48-hour fermented loaf with a dark, blistered crust and a tangy, custard-like crumb.',
-    'long_desc'   => 'Sourdough loaf kami difermentasi selama 48 jam menggunakan starter ragi alami yang sudah berusia 3 tahun. Proses fermentasi lambat ini menghasilkan cita rasa yang kompleks — asam ringan, manis alami, dan aroma biji-bijian yang kaya.
+// // Static details (reviews, thumbs, storage) — keyed by product id
+// $static = [
+//   1 => [
+//     'label'       => 'BESTSELLER',
+//     'unit'        => '/ buah',
+//     'rating'      => 4.9,
+//     'review_count' => 128,
+//     'weight'      => '85 gram',
+//     'shelf_life'  => '2–3 hari',
+//     'thumbs'      => [
+//       'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=80',
+//       'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?w=200&q=80',
+//       'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=80',
+//     ],
+//     'long_desc'   => "Croissant kami dibuat melalui proses laminasi tiga hari dengan 27 lapisan mentega Normandy pilihan. Setiap gigitan menghasilkan suara renyah khas yang diikuti tekstur lembut dan beraroma butter intens.\n\nAdonan diistirahatkan semalam di suhu dingin untuk mengembangkan kompleksitas rasa, kemudian dipanggang dalam oven batu bersuhu tinggi hingga berwarna coklat keemasan sempurna.",
+//     'ingredients' => 'Tepung terigu protein tinggi, mentega Normandy 84% fat, susu segar, gula, garam laut, ragi alami.',
+//     'storage'     => [
+//       ['icon' => '🌡️', 'title' => 'Suhu Ruang',  'desc' => 'Simpan dalam wadah kedap udara, tahan 2–3 hari.'],
+//       ['icon' => '❄️', 'title' => 'Kulkas',       'desc' => 'Bungkus rapat, tahan hingga 5 hari. Hangatkan 3 menit di oven 160°C sebelum disajikan.'],
+//       ['icon' => '🧊', 'title' => 'Freezer',      'desc' => 'Dapat disimpan hingga 1 bulan. Thaw semalam di kulkas, lalu panaskan di oven.'],
+//       ['icon' => '☀️', 'title' => 'Tips Sajian',  'desc' => 'Paling nikmat disajikan hangat dalam 30 menit setelah dipanggang ulang.'],
+//     ],
+//     'reviews'     => [
+//       ['name' => 'Siti R.',    'rating' => 5, 'date' => '3 hari lalu',   'text' => 'Croissant terenak yang pernah saya coba! Renyah di luar, lembut di dalam. Aroma butternya luar biasa. Pasti order lagi!'],
+//       ['name' => 'Budi S.',    'rating' => 5, 'date' => '1 minggu lalu', 'text' => 'Kualitas bakery premium, harga terjangkau. Pengiriman juga cepat dan roti masih fresh waktu sampai.'],
+//       ['name' => 'Dewi L.',    'rating' => 4, 'date' => '2 minggu lalu', 'text' => 'Enak banget! Cuma sayang sedikit terlalu manis buat selera saya. Tapi tetap worth it sih untuk kualitas segini.'],
+//     ],
+//     'rating_bars' => [5 => 85, 4 => 10, 3 => 3, 2 => 1, 1 => 1],
+//   ],
+//   2 => [
+//     'label'       => 'SIGNATURE',
+//     'unit'        => '/ loaf',
+//     'rating'      => 4.8,
+//     'review_count' => 96,
+//     'weight'      => '400 gram',
+//     'shelf_life'  => '4–5 hari',
+//     'thumbs'      => [
+//       'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=200&q=80',
+//       'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200&q=80',
+//     ],
+//     'long_desc'   => "Sourdough loaf kami difermentasi selama 48 jam menggunakan starter ragi alami yang sudah berusia 3 tahun. Proses fermentasi lambat ini menghasilkan cita rasa yang kompleks.\n\nDipanggang dalam dutch oven batu untuk menghasilkan kulit yang gelap, melepuh, dan retakan alami yang khas.",
+//     'ingredients' => 'Tepung gandum stone-ground, air, garam laut, ragi alami (starter sourdough).',
+//     'storage'     => [
+//       ['icon' => '🌡️', 'title' => 'Suhu Ruang',  'desc' => 'Simpan terbungkus kain linen bersih, tahan 4–5 hari.'],
+//       ['icon' => '❄️', 'title' => 'Kulkas',       'desc' => 'Tidak disarankan — kulkas membuat sourdough cepat basi.'],
+//       ['icon' => '🧊', 'title' => 'Freezer',      'desc' => 'Iris dulu sebelum dibekukan. Panggang langsung dari frozen di 200°C selama 5–8 menit.'],
+//       ['icon' => '🔪', 'title' => 'Tips Potong',  'desc' => 'Tunggu minimal 1 jam setelah dipanggang sebelum diiris agar crumb tidak kempes.'],
+//     ],
+//     'reviews'     => [
+//       ['name' => 'Ahmad K.', 'rating' => 5, 'date' => '5 hari lalu',   'text' => 'Sourdough autentik! Asam-manisnya pas, kulit luarnya beneran renyah.'],
+//       ['name' => 'Nina P.',  'rating' => 5, 'date' => '1 minggu lalu', 'text' => 'Sudah langganan setiap minggu. Rotinya konsisten enak dan fresh setiap kali order.'],
+//     ],
+//     'rating_bars' => [5 => 88, 4 => 8, 3 => 3, 2 => 1, 1 => 0],
+//   ],
+//   3 => [
+//     'label'       => 'FAVORIT',
+//     'unit'        => '/ buah',
+//     'rating'      => 4.7,
+//     'review_count' => 74,
+//     'weight'      => '90 gram',
+//     'shelf_life'  => '2–3 hari',
+//     'thumbs'      => ['https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?w=200&q=80'],
+//     'long_desc'   => 'Pain au Chocolat kami menggunakan dua batang coklat Valrhona 70% yang dibalut adonan laminasi butter Normandy. Diproses tiga hari seperti croissant kami.',
+//     'ingredients' => 'Tepung terigu, mentega Normandy 84%, coklat Valrhona 70%, susu, gula, garam, ragi alami.',
+//     'storage'     => [
+//       ['icon' => '🌡️', 'title' => 'Suhu Ruang', 'desc' => 'Simpan dalam wadah tertutup, tahan 2–3 hari.'],
+//       ['icon' => '❄️', 'title' => 'Kulkas',      'desc' => 'Bungkus rapat, tahan 5 hari. Hangatkan 3 menit di oven 160°C.'],
+//     ],
+//     'reviews'     => [
+//       ['name' => 'Rini W.', 'rating' => 5, 'date' => '2 hari lalu', 'text' => 'Coklat Valrhona-nya kerasa banget! Adonannya lembut dan berlapis sempurna.'],
+//     ],
+//     'rating_bars' => [5 => 80, 4 => 14, 3 => 4, 2 => 1, 1 => 1],
+//   ],
+// ];
 
-Dipanggang dalam dutch oven batu untuk menghasilkan kulit yang gelap, melepuh, dan retakan alami yang khas.',
-    'ingredients' => 'Tepung gandum stone-ground, air, garam laut, ragi alami (starter sourdough).',
-    'storage'     => [
-      ['icon' => '🌡️', 'title' => 'Suhu Ruang',  'desc' => 'Simpan terbungkus kain linen bersih, tahan 4–5 hari.'],
-      ['icon' => '❄️', 'title' => 'Kulkas',       'desc' => 'Tidak disarankan — kulkas membuat sourdough cepat basi.'],
-      ['icon' => '🧊', 'title' => 'Freezer',      'desc' => 'Iris dulu sebelum dibekukan. Panggang langsung dari frozen di 200°C selama 5–8 menit.'],
-      ['icon' => '🔪', 'title' => 'Tips Potong',  'desc' => 'Tunggu minimal 1 jam setelah dipanggang sebelum diiris agar crumb tidak kempes.'],
-    ],
-    'reviews'     => [
-      ['name' => 'Ahmad K.', 'rating' => 5, 'date' => '5 hari lalu',  'text' => 'Sourdough autentik! Asam-manisnya pas, kulit luarnya beneran renyah. Mirip yang di bakery artisan mahal tapi harganya jauh lebih masuk akal.'],
-      ['name' => 'Nina P.',  'rating' => 5, 'date' => '1 minggu lalu', 'text' => 'Sudah langganan setiap minggu. Rotinya konsisten enak dan fresh setiap kali order.'],
-    ],
-    'rating_bars' => [5 => 88, 4 => 8, 3 => 3, 2 => 1, 1 => 0],
-  ],
-  3 => [
-    'id'          => 3,
-    'name'        => 'Pain au Chocolat',
-    'label'       => 'FAVORIT',
-    'price'       => 42000,
-    'price_fmt'   => 'Rp 42.000',
-    'unit'        => '/ buah',
-    'rating'      => 4.7,
-    'review_count' => 74,
-    'stock'       => 18,
-    'weight'      => '90 gram',
-    'shelf_life'  => '2–3 hari',
-    'image'       => 'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?w=800&q=80',
-    'thumbs'      => [
-      'https://images.unsplash.com/photo-1549903072-7e6e0bedb7fb?w=200&q=80',
-    ],
-    'short_desc'  => 'Buttery laminated dough wrapped around two batons of 70% dark Valrhona chocolate.',
-    'long_desc'   => 'Pain au Chocolat kami menggunakan dua batang coklat Valrhona 70% yang dibalut adonan laminasi butter Normandy. Diproses tiga hari seperti croissant kami, menghasilkan lapisan yang sempurna dengan sensasi lumer coklat premium di setiap gigitan.',
-    'ingredients' => 'Tepung terigu, mentega Normandy 84%, coklat Valrhona 70%, susu, gula, garam, ragi alami.',
-    'storage'     => [
-      ['icon' => '🌡️', 'title' => 'Suhu Ruang', 'desc' => 'Simpan dalam wadah tertutup, tahan 2–3 hari.'],
-      ['icon' => '❄️', 'title' => 'Kulkas',      'desc' => 'Bungkus rapat, tahan 5 hari. Hangatkan 3 menit di oven 160°C.'],
-    ],
-    'reviews'     => [
-      ['name' => 'Rini W.', 'rating' => 5, 'date' => '2 hari lalu', 'text' => 'Coklat Valrhona-nya kerasa banget! Adonannya lembut dan berlapis sempurna. Ini yang terenak dari semua yang pernah saya coba.'],
-    ],
-    'rating_bars' => [5 => 80, 4 => 14, 3 => 4, 2 => 1, 1 => 1],
-  ],
+// Merge DB data with static details (DB is source of truth for name/price/stock/image)
+$s = $static[$product_id] ?? [
+    'label'=>'PRODUK','unit'=>'/ buah','rating'=>4.5,'review_count'=>0,
+    'weight'=>'-','shelf_life'=>'-','thumbs'=>[],'long_desc'=>'','ingredients'=>'-',
+    'storage'=>[],'reviews'=>[],'rating_bars'=>[],
 ];
 
-// Fallback ke produk pertama jika ID tidak ditemukan
-if (!isset($products[$product_id])) {
-  $product_id = 1;
-}
-$p = $products[$product_id];
-
-// Status stok
-if ($p['stock'] === 0) {
-  $stock_class = 'detail-stock-out';
-  $stock_text  = 'Habis';
-} elseif ($p['stock'] <= 5) {
-  $stock_class = 'detail-stock-low';
-  $stock_text  = 'Stok Menipis (' . $p['stock'] . ' tersisa)';
+if ($db_product) {
+    $p = array_merge($s, [
+        'id'        => $db_product['id_produk'],
+        'name'      => $db_product['nama_produk'],
+        'price'     => $db_product['harga'],
+        'price_fmt' => 'Rp ' . number_format($db_product['harga'], 0, ',', '.'),
+        'stock'     => $db_product['stok'],
+        'image'     => $db_product['foto'] ?: ($s['thumbs'][0] ?? ''),
+        'short_desc'=> $db_product['deskripsi'],
+    ]);
 } else {
-  $stock_class = 'detail-stock-ok';
-  $stock_text  = 'Tersedia (' . $p['stock'] . ' unit)';
+    // Redirect if product not found
+    header('Location: products.php'); exit;
 }
 
-// Related products (produk lain selain yang sedang ditampilkan)
-$related = array_filter($products, fn($item) => $item['id'] !== $product_id);
-$related = array_slice($related, 0, 4);
+// Stock display
+if ($p['stock'] === 0) {
+    $stock_class = 'detail-stock-out';
+    $stock_text  = 'Habis';
+} elseif ($p['stock'] <= 5) {
+    $stock_class = 'detail-stock-low';
+    $stock_text  = 'Stok Menipis (' . $p['stock'] . ' tersisa)';
+} else {
+    $stock_class = 'detail-stock-ok';
+    $stock_text  = 'Tersedia (' . $p['stock'] . ' unit)';
+}
+
+// Related products from DB
+$related_stmt = $pdo->prepare('SELECT * FROM products WHERE id_produk != ? ORDER BY RAND() LIMIT 4');
+$related_stmt->execute([$product_id]);
+$related_db = $related_stmt->fetchAll();
+// Map to shape expected by the template
+$related = array_map(fn($r) => [
+    'id'         => $r['id_produk'],
+    'name'       => $r['nama_produk'],
+    'short_desc' => $r['deskripsi'],
+    'price_fmt'  => 'Rp ' . number_format($r['harga'], 0, ',', '.'),
+    'image'      => $r['foto'],
+], $related_db);
 ?>
 
 <!-- ==================== PRODUCT DETAIL ==================== -->
@@ -136,9 +160,9 @@ $related = array_slice($related, 0, 4);
     <!-- Breadcrumb -->
     <nav class="breadcrumb reveal">
       <a href="index.php">Home</a>
-      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-sep">></span>
       <a href="products.php">Produk</a>
-      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-sep">></span>
       <span class="breadcrumb-current"><?= htmlspecialchars($p['name']) ?></span>
     </nav>
 
