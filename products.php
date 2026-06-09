@@ -55,7 +55,7 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
         <h3>Custom Orders</h3>
         <p>Planning a special event or need a large catering batch? We hand bake custom orders with 48 hours' notice.</p>
       </div>
-      <button class="btn-dark ripple-btn">Inquire Now →</button>
+      <button class="btn-dark ripple-btn" onclick="inquireNow()">Inquire Now</button>
     </div>
   </div>
 

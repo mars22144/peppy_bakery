@@ -73,6 +73,11 @@ function observeReveals() {
 // Initial observe
 observeReveals();
 
+// button inquire now
+function inquireNow(){
+  window.location.href = "https://wa.me/+6281227101516"
+}
+
 /* ===== RIPPLE EFFECT ===== */
 document.addEventListener('click', function(e) {
   const btn = e.target.closest('.ripple-btn');
