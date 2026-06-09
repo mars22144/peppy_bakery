@@ -14,7 +14,7 @@
       <div class="hero-img-wrap">
         <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=80" alt="Artisan Bread" />
         <div class="hero-badge">
-          <span class="badge-icon">🌿</span>
+          <span class="badge-icon fa-solid fa-leaf"></span>
           <div>
             <strong>100% Organik</strong>
             <small>Tanpa pengawet buatan</small>
@@ -48,7 +48,7 @@
       </div>
       <div class="featured-card light reveal delay-1" onclick="window.location.href='products.php'">
         <div class="feat-text">
-          <span class="feat-icon">🚚</span>
+          <span class="feat-icon fa-solid fa-car-side"></span>
           <h3>Pengiriman Seluruh Kota</h3>
           <p>Nikmati kesegaran roti kami langsung di depan pintu rumah Anda.</p>
           <a href="products.php" class="feat-link">Pesan Sekarang →</a>
