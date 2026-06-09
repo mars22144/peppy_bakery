@@ -30,9 +30,13 @@ $base_url = '/peppy_bakery';
             </ul>
 
             <div class="nav-action-group">
-                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'customer'): ?>
-                    <a href="<?= $base_url ?>/cart.php" class="nav-icon-link"><i class="fas fa-shopping-cart"></i></a>
-                    <a href="<?= $base_url ?>/customer/orders.php" class="nav-icon-link"><i class="fas fa-user"></i></a>
+                <?php if (isset($_SESSION['role'])): ?>
+                    <?php if ($_SESSION['role'] === 'customer'): ?>
+                        <a href="<?= $base_url ?>/cart.php" class="nav-icon-link"><i class="fas fa-shopping-cart"></i></a>
+                        <a href="<?= $base_url ?>/customer/orders.php" class="nav-icon-link"><i class="fas fa-user"></i></a>
+                    <?php elseif ($_SESSION['role'] === 'admin'): ?>
+                        <a href="<?= $base_url ?>/admin/index_admin.php" class="nav-icon-link" title="Admin Dashboard"><i class="fas fa-chart-line"></i></a>
+                    <?php endif; ?>
                     <a href="<?= $base_url ?>/logout.php" class="nav-logout-pill">Logout</a>
                 <?php else: ?>
                     <a href="<?= $base_url ?>/login.php" class="nav-contact ripple-btn">Login</a>
