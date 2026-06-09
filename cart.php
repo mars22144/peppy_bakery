@@ -13,6 +13,21 @@ $pdo = getDB();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
+    // Add to cart
+    if ($action === 'add_to_cart') {
+        $pid = (int)($_POST['product_id'] ?? 0);
+        $qty = max(1, (int)($_POST['qty'] ?? 1));
+        if ($pid > 0) {
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = [];
+            }
+            if (isset($_SESSION['cart'][$pid])) {
+                $_SESSION['cart'][$pid] += $qty;
+            } else {
+                $_SESSION['cart'][$pid] = $qty;
+            }
+        }
+    }
     // Update quantity
     if ($action === 'update_qty') {
         $pid = (int)($_POST['product_id'] ?? 0);
@@ -82,7 +97,7 @@ if (!empty($cart)) {
                 <div class="cart-item-right">
                     <form method="POST" style="display:flex;align-items:center;gap:8px;">
                         <input type="hidden" name="action" value="update_qty">
-                        <input type="hidden" name="product_id" value="<?= $p['id_produk'] ?>">
+                        <input type="hidden" name="product_id" value="<?= $pid ?>">
                         <input type="number" name="qty" value="<?= $row['qty'] ?>"
                             min="1" max="<?= $p['stok'] ?>" class="cart-qty-input"
                             onchange="this.form.submit()">
@@ -90,7 +105,7 @@ if (!empty($cart)) {
                     <strong class="cart-item-subtotal">Rp <?= number_format($row['subtotal'], 0, ',', '.') ?></strong>
                     <form method="POST" style="display:inline;">
                         <input type="hidden" name="action" value="remove">
-                        <input type="hidden" name="product_id" value="<?= $p['id_produk'] ?>">
+                        <input type="hidden" name="product_id" value="<?= $pid ?>">
                         <button type="submit" class="cart-delete-btn"><i class="fas fa-trash"></i></button>
                     </form>
                 </div>
