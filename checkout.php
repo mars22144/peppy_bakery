@@ -54,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (isset($prods[$pid])) {
                     $pr = $prods[$pid];
                     $sub = $pr['harga'] * $qty;
-                    $ins_detail->execute([$order_id, $pr['id_produk'], $pr['nama_produk'], $pr['harga'], $qty, $sub]);
+                    $ins_detail->execute([$order_id, $pid, $pr['nama_produk'], $pr['harga'], $qty, $sub]);
                     
                     // Decrement stock
                     $pdo->prepare('UPDATE products SET stok = GREATEST(0, stok - ?) WHERE id_produk = ?')
-                        ->execute([$qty, $pr['id_produk']]);
+                        ->execute([$qty, $pid]);
                 }
             }
 
