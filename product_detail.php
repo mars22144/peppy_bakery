@@ -226,22 +226,18 @@ $related = array_map(fn($r) => [
         <!-- Meta -->
         <div class="detail-meta">
           <div class="detail-meta-row">
-            <span class="detail-meta-icon">📦</span>
             <span class="detail-meta-label">Stok</span>
             <span class="detail-meta-value <?= $stock_class ?>"><?= $stock_text ?></span>
           </div>
           <div class="detail-meta-row">
-            <span class="detail-meta-icon">⚖️</span>
             <span class="detail-meta-label">Berat</span>
             <span class="detail-meta-value"><?= $p['weight'] ?></span>
           </div>
           <div class="detail-meta-row">
-            <span class="detail-meta-icon">🕐</span>
             <span class="detail-meta-label">Ketahanan</span>
             <span class="detail-meta-value"><?= $p['shelf_life'] ?></span>
           </div>
           <div class="detail-meta-row">
-            <span class="detail-meta-icon">🚚</span>
             <span class="detail-meta-label">Pengiriman</span>
             <span class="detail-meta-value">Hari yang sama (order sebelum jam 10)</span>
           </div>
