@@ -22,6 +22,20 @@ body {
     min-height: 100vh;
 }
 
+/* hapus tanda panah pada input type number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* untuk firefox */
+input[type=number]{
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+
 .header-place {
     display: flex;
     justify-content: space-around;
