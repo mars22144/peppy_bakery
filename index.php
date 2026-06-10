@@ -14,7 +14,6 @@
       <div class="hero-img-wrap">
         <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=80" alt="Artisan Bread" />
         <div class="hero-badge">
-          <span class="badge-icon fa-solid fa-leaf"></span>
           <div>
             <strong>100% Organik</strong>
             <small>Tanpa pengawet buatan</small>
