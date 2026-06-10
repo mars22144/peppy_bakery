@@ -13,8 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name     = trim($_POST['name'] ?? '');
     $email    = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
+    $no_hp    = trim($_POST['no_hp'] ?? '');
+    $alamat   = trim($_POST['alamat'] ?? '');
 
-    if (!$name || !$email || !$password) {
+    if (!$name || !$email || !$password || !$no_hp || !$alamat) {
         $error = 'Semua field wajib diisi.';
     } elseif (strlen($password) < 6) {
         $error = 'Password minimal 6 karakter.';
@@ -28,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'Email sudah terdaftar. Silakan gunakan email lain.';
         } else {
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $ins  = $pdo->prepare('INSERT INTO users (nama, email, password, role) VALUES (?, ?, ?, "customer")');
-            $ins->execute([$name, $email, $hash]);
+            $ins  = $pdo->prepare('INSERT INTO users (nama, email, password, role, no_hp, alamat) VALUES (?, ?, ?, "customer", ?, ?)');
+            $ins->execute([$name, $email, $hash, $no_hp, $alamat]);
             $success = 'Akun berhasil dibuat! Silakan login.';
         }
     }
@@ -64,6 +66,17 @@ include 'layouts/header.php';
                     <input type="email" name="email" required class="auth-input"
                         placeholder="contoh@email.com"
                         value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+                </div>
+                <div class="auth-form-group">
+                    <label class="auth-label">Nomor HP</label>
+                    <input type="text" name="no_hp" required class="auth-input"
+                        placeholder="08xx-xxxx-xxxx"
+                        value="<?= htmlspecialchars($_POST['no_hp'] ?? '') ?>">
+                </div>
+                <div class="auth-form-group">
+                    <label class="auth-label">Alamat Lengkap</label>
+                    <textarea name="alamat" required class="auth-input textarea-address" style="resize: vertical; min-height: 80px;"
+                        placeholder="Masukkan alamat lengkap kamu"><?= htmlspecialchars($_POST['alamat'] ?? '') ?></textarea>
                 </div>
                 <div class="auth-form-group">
                     <label class="auth-label">Password</label>
