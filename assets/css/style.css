@@ -613,7 +613,7 @@ input[type=number]{
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
-  font-family: "Ubuntu" rif;
+  font-family: "Ubuntu", serif;
   font-weight: 700;
   font-size: 0.88rem;
   cursor: pointer;
@@ -1127,7 +1127,7 @@ a.btn-primary {
 }
 
 .auth-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Ubuntu', serif;
   text-align: center;
   margin-bottom: 30px;
   color: var(--dark);
@@ -1151,7 +1151,7 @@ a.btn-primary {
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   font-size: 0.95rem;
   outline: none;
   transition: border-color 0.2s;
@@ -1216,7 +1216,7 @@ a.btn-primary {
 }
 
 .cart-item-name {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Ubuntu', serif;
   font-size: 1.2rem;
   margin-bottom: 5px;
 }
@@ -1291,7 +1291,7 @@ a.btn-primary {
 }
 
 .checkout-section-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Ubuntu', serif;
   margin-bottom: 20px;
   color: var(--dark);
   font-size: 1.3rem;
@@ -1365,7 +1365,7 @@ a.btn-primary {
 }
 
 .orders-header h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Ubuntu', serif;
   color: var(--dark);
   font-size: 1.8rem;
 }
@@ -1438,7 +1438,7 @@ a.btn-primary {
 }
 
 .faq-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Ubuntu', serif;
   color: var(--dark);
   text-align: center;
   margin-bottom: 40px;
@@ -1465,7 +1465,7 @@ a.btn-primary {
 }
 
 .faq-question {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Ubuntu', serif;
   font-size: 1.2rem;
   color: var(--orange);
   margin-bottom: 10px;
@@ -1479,7 +1479,7 @@ a.btn-primary {
 
 /* === Sisa utility yang dipindahkan === */
 .page-title-main {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Ubuntu', serif;
   color: var(--dark);
   margin-bottom: 30px;
   font-size: 1.8rem;
@@ -1535,7 +1535,7 @@ a.btn-primary {
 .cart-page-title {
   display: block;
   margin-bottom: 30px;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Ubuntu', serif;
   font-size: 1.8rem;
   color: var(--dark);
 }
@@ -1549,7 +1549,7 @@ a.btn-primary {
 }
 
 /* =========================================================
-   PRODUCT DETAIL PAGE
+  PRODUCT DETAIL PAGE
    ========================================================= */
 
 /* === LAYOUT === */
