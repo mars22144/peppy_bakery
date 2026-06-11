@@ -8,11 +8,17 @@
     --admin-white: #fff;
 }
 
+@font-face {
+    font-family: "Ubuntu";
+    src: url("../font/Ubuntu-Regular.ttf") format("truetype");
+    font-display: swap;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'DM Sans', sans-serif;
+    font-family: "Ubuntu", sans-serif;
 }
 
 body {
@@ -24,15 +30,15 @@ body {
 
 /* hapus tanda panah pada input type number */
 input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button{
-  -webkit-appearance: none;
-  margin: 0;
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* untuk firefox */
-input[type=number]{
-  -moz-appearance: textfield;
-  appearance: textfield;
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 
@@ -64,7 +70,7 @@ input[type=number]{
 }
 
 .sidebar-header h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: "Ubuntu", serif;
     color: var(--admin-primary);
 }
 
@@ -212,19 +218,19 @@ th {
     gap: 5px;
 }
 
-thead tr th{
+thead tr th {
     text-align: center;
 }
 
-tbody tr td{
+tbody tr td {
     text-align: center;
 }
 
-tr th{
+tr th {
     border: 1px solid #ccc;
 }
 
-td{
+td {
     border: 1px solid #ccc;
 }
 
@@ -319,7 +325,7 @@ td{
     padding: 5px 10px;
     border-radius: 5px;
     border: 1px solid #ddd;
-    font-family: 'DM Sans', sans-serif;
+    font-family: "Ubuntu", sans-serif;
     font-size: 0.9rem;
     background: #fff;
     cursor: pointer;
@@ -514,7 +520,7 @@ td{
     padding: 10px 14px;
     border: 1.5px solid #ddd;
     border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: "Ubuntu", sans-serif;
     font-size: 0.9rem;
     outline: none;
     transition: border-color 0.2s;
