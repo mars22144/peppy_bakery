@@ -3,7 +3,8 @@ require_once '../config/database.php';
 include '../layouts/header.php';
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
-    header('Location: ../login.php'); exit;
+    header('Location: ../login.php');
+    exit;
 }
 
 $pdo     = getDB();
@@ -40,46 +41,45 @@ $status_class = [
 
         <?php if ($success): ?>
             <div class="auth-alert auth-alert--success" style="margin-bottom:20px;">
-                ✅ Pesanan kamu berhasil dibuat! Kami akan segera memproses pesananmu.
+                Pesanan kamu berhasil dibuat! Kami akan segera memproses pesananmu.
             </div>
         <?php endif; ?>
 
         <div class="orders-card">
             <?php if (empty($orders)): ?>
                 <div style="text-align:center;padding:60px 20px;color:#888;">
-                    <p style="font-size:2.5rem;margin-bottom:12px;">📦</p>
                     <p>Kamu belum memiliki pesanan.</p>
                     <a href="../products.php" class="btn-primary ripple-btn" style="display:inline-block;margin-top:16px;">Belanja Sekarang</a>
                 </div>
             <?php else: ?>
-            <table class="orders-table">
-                <thead>
-                    <tr>
-                        <th>ID Pesanan</th>
-                        <th>Tanggal</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($orders as $o): ?>
-                    <tr>
-                        <td class="td-id">#ORD-<?= str_pad($o['id_order'], 4, '0', STR_PAD_LEFT) ?></td>
-                        <td class="td-date"><?= date('d M Y', strtotime($o['tgl_order'])) ?></td>
-                        <td class="td-total">Rp <?= number_format($o['ttl_harga'], 0, ',', '.') ?></td>
-                        <td>
-                            <span class="status-badge <?= $status_class[$o['status_order']] ?? '' ?>">
-                                <?= $status_label[$o['status_order']] ?? $o['status_order'] ?>
-                            </span>
-                        </td>
-                        <td>
-                            <a href="order_detail.php?id=<?= $o['id_order'] ?>" class="orders-detail-link">Detail</a>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>ID Pesanan</th>
+                            <th>Tanggal</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($orders as $o): ?>
+                            <tr>
+                                <td class="td-id">#ORD-<?= str_pad($o['id_order'], 4, '0', STR_PAD_LEFT) ?></td>
+                                <td class="td-date"><?= date('d M Y', strtotime($o['tgl_order'])) ?></td>
+                                <td class="td-total">Rp <?= number_format($o['ttl_harga'], 0, ',', '.') ?></td>
+                                <td>
+                                    <span class="status-badge <?= $status_class[$o['status_order']] ?? '' ?>">
+                                        <?= $status_label[$o['status_order']] ?? $o['status_order'] ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="order_detail.php?id=<?= $o['id_order'] ?>" class="orders-detail-link">Detail</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             <?php endif; ?>
         </div>
     </div>
