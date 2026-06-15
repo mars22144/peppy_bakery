@@ -56,7 +56,7 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
     <div class="custom-orders reveal" style="margin-top: 50px;">
       <div class="co-text">
         <h3>Custom Orders</h3>
-        <p>Merencanakan acara spesial or membutuhkan pesanan katering dalam jumlah besar? Kami membuat kue pesanan khusus, kami akan membalas chat anda dalam 48 jam.</p>
+        <p>Merencanakan acara spesial atau membutuhkan pesanan katering dalam jumlah besar? Kami membuat kue pesanan khusus, kami akan membalas chat anda dalam 48 jam.</p>
       </div>
       <button class="btn-dark ripple-btn" onclick="inquireNow()">Chat Sekarang</button>
     </div>
