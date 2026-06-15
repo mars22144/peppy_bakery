@@ -19,7 +19,7 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
     <div class="product-grid">
       <?php foreach ($products as $i => $p): ?>
       <?php
-        $img = htmlspecialchars($p['foto'] ?: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=700&q=80');
+        $img = htmlspecialchars($p['foto']);
         $pid = (int)$p['id_produk'];
         $card_class = ($i === 0 && $p['id_produk']) ? 'prod-card featured-prod' : 'prod-card';
         $delay_classes = ['reveal delay-1','reveal delay-2','reveal delay-1','reveal delay-2','reveal delay-3'];
