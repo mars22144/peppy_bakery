@@ -93,7 +93,7 @@ if (!empty($cart)) {
 
         <?php if (empty($cart_rows)): ?>
             <div class="cart-card" style="text-align:center;padding:60px 20px;">
-                <p style="font-size:3rem;margin-bottom:12px;">🧺</p>
+                <p style="font-size:3rem;margin-bottom:12px;" class="fa-solid fa-cart-shopping"></p>
                 <p style="color:#888;margin-bottom:20px;">Keranjang kamu masih kosong.</p>
                 <a href="products.php" class="btn-primary ripple-btn">Lihat Produk</a>
             </div>
