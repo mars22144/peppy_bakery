@@ -70,11 +70,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             $ins_pay->execute([$order_id, $payment]);
 
+            // Generate auto no_resi (e.g. PBK-JNE-123456789)
+            $clean_kurir = preg_replace('/[^A-Za-z0-9]/', '', $kurir);
+            $no_resi     = 'PBK-' . strtoupper($clean_kurir) . '-' . rand(100000000, 999999999);
+
             // 4. Insert shipping
             $ins_ship = $pdo->prepare(
-                'INSERT INTO shipping (id_order, alamat_kirim, kurir, no_resi, status_kirim) VALUES (?, ?, ?, NULL, "pending")'
+                'INSERT INTO shipping (id_order, alamat_kirim, kurir, no_resi, status_kirim) VALUES (?, ?, ?, ?, "pending")'
             );
-            $ins_ship->execute([$order_id, $address, $kurir]);
+            $ins_ship->execute([$order_id, $address, $kurir, $no_resi]);
 
             $pdo->commit();
 
