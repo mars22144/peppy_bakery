@@ -70,8 +70,20 @@ if (isset($_POST['action']) && $_POST['action'] === 'update') {
     $msg = 'Produk berhasil diperbarui.';
 }
 
-// ── FETCH ALL ────────────────────────────────────────────────────────────────
-$products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetchAll();
+// ── FETCH ALL WITH PAGINATION ────────────────────────────────────────────────
+$limit = 10;
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$offset = ($page - 1) * $limit;
+
+// Total products count
+$total_data = $pdo->query('SELECT COUNT(*) FROM products')->fetchColumn();
+$total_pages = ceil($total_data / $limit);
+
+$products_stmt = $pdo->prepare('SELECT * FROM products ORDER BY id_produk DESC LIMIT :limit OFFSET :offset');
+$products_stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+$products_stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$products_stmt->execute();
+$products = $products_stmt->fetchAll();
 ?>
 
 <?php if ($msg): ?>
@@ -140,6 +152,22 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
             <?php endif; ?>
         </tbody>
     </table>
+
+    <?php if ($total_pages > 1): ?>
+    <div class="pagination">
+        <?php if ($page > 1): ?>
+            <a href="?page=<?= $page - 1 ?>" class="pagination-link">&laquo; Prev</a>
+        <?php endif; ?>
+        
+        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+            <a href="?page=<?= $i ?>" class="pagination-link <?= $i === $page ? 'active' : '' ?>"><?= $i ?></a>
+        <?php endfor; ?>
+        
+        <?php if ($page < $total_pages): ?>
+            <a href="?page=<?= $page + 1 ?>" class="pagination-link">Next &raquo;</a>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
 </div>
 
 <!-- ── Modal: CREATE ──────────────────────────────────────────────────────── -->

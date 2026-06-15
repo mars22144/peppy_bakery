@@ -37,9 +37,12 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
           </div>
           <p><?= htmlspecialchars($p['deskripsi']) ?></p>
           <a href="product_detail.php?id=<?= $pid ?>" class="btn-primary ripple-btn"
-            style="text-decoration:none;display:inline-block;margin-top:15px;">
+            style="text-decoration:none;display:inline-block;margin-top:15px;vertical-align:middle;">
             <?= ($i === 0 && $p['id_produk']) ? 'Detail &amp; Pesan' : 'Pesan' ?>
           </a>
+          <button class="btn-cart-quick quick-add-cart ripple-btn" data-id="<?= $pid ?>" title="Tambah langsung ke keranjang">
+            <i class="fas fa-cart-plus"></i>
+          </button>
         </div>
       </div>
       <?php endforeach; ?>
@@ -53,7 +56,7 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
     <div class="custom-orders reveal" style="margin-top: 50px;">
       <div class="co-text">
         <h3>Custom Orders</h3>
-        <p>Merencanakan acara spesial atau membutuhkan pesanan katering dalam jumlah besar? Kami membuat kue pesanan khusus, kami akan membalas chat anda dalam 48 jam.</p>
+        <p>Merencanakan acara spesial or membutuhkan pesanan katering dalam jumlah besar? Kami membuat kue pesanan khusus, kami akan membalas chat anda dalam 48 jam.</p>
       </div>
       <button class="btn-dark ripple-btn" onclick="inquireNow()">Chat Sekarang</button>
     </div>
@@ -61,4 +64,32 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
 
 </section>
 
+<script>
+document.querySelectorAll('.quick-add-cart').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const productId = this.getAttribute('data-id');
+        const formData = new FormData();
+        formData.append('product_id', productId);
+        formData.append('qty', 1);
+
+        fetch('add_to_cart_ajax.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menambahkan produk ke keranjang.');
+        });
+    });
+});
+</script>
+
 <?php include 'layouts/footer.php'; ?>
+

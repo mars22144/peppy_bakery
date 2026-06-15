@@ -532,3 +532,42 @@ td {
     border-color: #F97316;
     background: #fff;
 }
+
+/* ===== PAGINATION ===== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 25px;
+}
+
+.pagination-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: var(--admin-white);
+    color: var(--admin-text);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.pagination-link:hover {
+    border-color: var(--admin-primary);
+    color: var(--admin-primary);
+    background: rgba(249, 115, 22, 0.05);
+}
+
+.pagination-link.active {
+    background: var(--admin-primary);
+    border-color: var(--admin-primary);
+    color: var(--admin-white);
+    cursor: default;
+}
