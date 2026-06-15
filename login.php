@@ -66,4 +66,3 @@ include 'layouts/header.php';
     </div>
 </section>
 
-<?php include 'layouts/footer.php'; ?>
