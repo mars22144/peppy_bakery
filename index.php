@@ -37,11 +37,12 @@
       <div class="featured-card pink reveal delay-2" onclick="window.location.href='products.php'">
         <div class="feat-text">
           <div class="feat-top">
-            <span class="feat-name">Sourdough Loaf</span>
-            <span class="feat-price">Rp 45k</span>
+            <span class="feat-name">Butter Cake</span>
+            <span class="feat-price">Rp 50k</span>
           </div>
-          <p>Fermentasi alami 24 jam untuk rasa yang autentik.</p>
-          <img src="assets/img/sourdough.jpg" alt="Sourdough" />
+          <p>Kue classic yang mengandalkan mentega sebagai bahan utama.
+          </p>
+          <img src="assets/img/cak.jpg" alt="Butter Cake" />
         </div>
       </div>
       <div class="featured-card light reveal delay-1" onclick="window.location.href='products.php'">
