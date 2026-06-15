@@ -125,7 +125,7 @@ foreach ($cart as $pid => $qty) {
                 <h3 class="checkout-section-title">Ringkasan Pesanan</h3>
                 <?php foreach ($items_display as $item): ?>
                 <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0e8d8;font-size:0.92rem;">
-                    <span><?= htmlspecialchars($item['name']) ?> × <?= $item['qty'] ?></span>
+                    <span><?= htmlspecialchars($item['name']) ?> x <?= $item['qty'] ?></span>
                     <span>Rp <?= number_format($item['subtotal'], 0, ',', '.') ?></span>
                 </div>
                 <?php endforeach; ?>
