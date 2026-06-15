@@ -60,7 +60,7 @@ $status_class = [
 
         <!-- Info Card -->
         <div class="orders-card" style="margin-bottom:20px;padding:20px 24px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div style="display:flex;justify-content:space-around;gap:50px;">
                 <div>
                     <label style="color:#888;font-size:0.8rem;display:block;margin-bottom:4px;text-transform:uppercase;">Tanggal Pesanan</label>
                     <p style="font-weight:600;"><?= date('d M Y, H:i', strtotime($order['tgl_order'])) ?></p>
@@ -76,6 +76,11 @@ $status_class = [
                     
                     <label style="color:#888;font-size:0.8rem;display:block;margin-top:16px;margin-bottom:4px;text-transform:uppercase;">Pembayaran</label>
                     <p><strong><?= htmlspecialchars(strtoupper($order['metode_nayar'])) ?></strong> (<?= strtoupper($order['status_bayar']) ?>)</p>
+                </div>
+
+                <div>
+                    <label style="color:#888;font-size:0.8rem;display:block;margin-bottom:4px;text-transform:uppercase;">Kurir</label>
+                    <p><strong><?= htmlspecialchars(strtoupper($order['kurir'])) ?></strong></p>
                 </div>
             </div>
         </div>
