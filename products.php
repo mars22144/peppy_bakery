@@ -13,7 +13,7 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
     <div class="product-header reveal">
       <span class="prod-label">OUR DAILY BAKE</span>
       <h1 class="prod-title">DAFTAR<br><span>MENU</span></h1>
-      <p>Each loaf at Peppy Bakery is a testament to the slow art of fermentation. We use only stone ground heritage grains and natural leavens, baked daily in our wood fired oven to achieve that signature shattering crust and airy, aromatic crumb.</p>
+      <p>Setiap roti di Peppy Bakery dibuat dari fermentasi yang lambat. Dipanggang setiap hari di oven berbahan bakar kayu kami untuk menghasilkan kerak yang renyah dan remah yang ringan serta aromatik.</p>
     </div>
 
     <div class="product-grid">
@@ -53,9 +53,9 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
     <div class="custom-orders reveal" style="margin-top: 50px;">
       <div class="co-text">
         <h3>Custom Orders</h3>
-        <p>Planning a special event or need a large catering batch? We hand bake custom orders with 48 hours' notice.</p>
+        <p>Merencanakan acara spesial atau membutuhkan pesanan katering dalam jumlah besar? Kami membuat kue pesanan khusus, kami akan membalas chat anda dalam 48 jam.</p>
       </div>
-      <button class="btn-dark ripple-btn" onclick="inquireNow()">Inquire Now</button>
+      <button class="btn-dark ripple-btn" onclick="inquireNow()">Chat Sekarang</button>
     </div>
   </div>
 
