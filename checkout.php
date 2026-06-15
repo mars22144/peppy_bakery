@@ -21,8 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $address = trim($_POST['address'] ?? '');
     $phone   = trim($_POST['phone']   ?? '');
     $payment = trim($_POST['payment'] ?? '');
+    $kurir   = trim($_POST['kurir']   ?? '');
 
-    if (!$address || !$phone || !$payment) {
+    if (!$address || !$phone || !$payment || !$kurir) {
         $error = 'Semua field wajib diisi.';
     } else {
         // Fetch product prices from DB
@@ -71,9 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // 4. Insert shipping
             $ins_ship = $pdo->prepare(
-                'INSERT INTO shipping (id_order, alamat_kirim, status_kirim) VALUES (?, ?, "pending")'
+                'INSERT INTO shipping (id_order, alamat_kirim, kurir, no_resi, status_kirim) VALUES (?, ?, ?, NULL, "pending")'
             );
-            $ins_ship->execute([$order_id, $address]);
+            $ins_ship->execute([$order_id, $address, $kurir]);
 
             $pdo->commit();
 
@@ -143,6 +144,18 @@ foreach ($cart as $pid => $qty) {
                     <input type="text" name="phone" required class="auth-input"
                         placeholder="08xx-xxxx-xxxx"
                         value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>">
+                </div>
+
+                <h3 class="checkout-section-title">Jasa Pengiriman (Kurir)</h3>
+                <div class="checkout-form-group">
+                    <select name="kurir" required class="auth-input">
+                        <option value="">Pilih Kurir</option>
+                        <option value="JNE" <?= ($_POST['kurir'] ?? '') === 'JNE' ? 'selected':'' ?>>JNE</option>
+                        <option value="J&T" <?= ($_POST['kurir'] ?? '') === 'J&T' ? 'selected':'' ?>>J&T</option>
+                        <option value="SiCepat" <?= ($_POST['kurir'] ?? '') === 'SiCepat' ? 'selected':'' ?>>SiCepat</option>
+                        <option value="GoSend" <?= ($_POST['kurir'] ?? '') === 'GoSend' ? 'selected':'' ?>>GoSend</option>
+                        <option value="GrabExpress" <?= ($_POST['kurir'] ?? '') === 'GrabExpress' ? 'selected':'' ?>>GrabExpress</option>
+                    </select>
                 </div>
 
                 <h3 class="checkout-section-title checkout-payment-title">Metode Pembayaran</h3>
