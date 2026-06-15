@@ -41,7 +41,7 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
             <?= ($i === 0 && $p['id_produk']) ? 'Detail &amp; Pesan' : 'Pesan' ?>
           </a>
           <button class="btn-cart-quick quick-add-cart ripple-btn" data-id="<?= $pid ?>" title="Tambah langsung ke keranjang">
-            <i class="fas fa-cart-plus"></i>
+            <i class="fa-solid fa-cart-plus"></i>
           </button>
         </div>
       </div>
