@@ -2673,3 +2673,42 @@ a.btn-primary {
 .btn-cart-quick:active {
   transform: translateY(0);
 }
+
+/* ===== PAGINATION ===== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 25px;
+}
+
+.pagination-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: var(--white);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.pagination-link:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: rgba(249, 115, 22, 0.05);
+}
+
+.pagination-link.active {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: var(--white);
+    cursor: default;
+}
