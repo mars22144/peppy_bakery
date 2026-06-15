@@ -11,7 +11,7 @@
     </div>
     <div class="phil-image reveal delay-2">
       <div class="phil-img-wrap">
-        <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=500&q=80" alt="Baker"/>
+        <img src="assets/img/about.png" alt="Baker"/>
       </div>
     </div>
   </div>

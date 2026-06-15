@@ -12,7 +12,7 @@
     </div>
     <div class="hero-image reveal delay-2">
       <div class="hero-img-wrap">
-        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=80" alt="Artisan Bread" />
+        <img src="assets/img/croissant.png" alt="Artisan Bread" />
         <div class="hero-badge">
           <div>
             <strong>100% Organik</strong>
@@ -28,9 +28,8 @@
     <h2 class="section-title reveal">Produk Unggulan Kami</h2>
     <div class="featured-grid">
       <div class="featured-card dark reveal delay-1" onclick="window.location.href='products.php'" style="cursor:pointer;">
-        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=700&q=80" alt="Croissant" />
+        <img src="assets/img/croissant.png" alt="Croissant" />
         <div class="feat-overlay">
-          <span class="feat-tag">TERLARIS</span>
           <h3>Classic French Croissants</h3>
           <p>Lapisan mentega yang renyah di luar dan lembut di dalam.</p>
         </div>
@@ -42,7 +41,7 @@
             <span class="feat-price">Rp 45k</span>
           </div>
           <p>Fermentasi alami 24 jam untuk rasa yang autentik.</p>
-          <img src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=300&q=80" alt="Sourdough" />
+          <img src="assets/img/sourdough.jpg" alt="Sourdough" />
         </div>
       </div>
       <div class="featured-card light reveal delay-1" onclick="window.location.href='products.php'">
