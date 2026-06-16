@@ -21,14 +21,22 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
       <?php
         $img = htmlspecialchars($p['foto']);
         $pid = (int)$p['id_produk'];
+        $is_oos = ((int)$p['stok'] <= 0);
         $card_class = ($i === 0 && $p['id_produk']) ? 'prod-card featured-prod' : 'prod-card';
+        if ($is_oos) $card_class .= ' out-of-stock';
         $delay_classes = ['reveal delay-1','reveal delay-2','reveal delay-1','reveal delay-2','reveal delay-3'];
         $d = $delay_classes[$i % 5];
       ?>
-      <div class="<?= $card_class ?> <?= $d ?>" onclick="window.location.href='product_detail.php?id=<?= $pid ?>'">
+      <div class="<?= $card_class ?> <?= $d ?>" <?= !$is_oos ? "onclick=\"window.location.href='product_detail.php?id={$pid}'\"" : '' ?>>
         <div class="prod-img-wrap">
           <img src="<?= $img ?>" alt="<?= htmlspecialchars($p['nama_produk']) ?>"/>
-          <?php if ($p['id_produk']): ?><span class="prod-badge">Bestseller</span><?php endif; ?>
+          <?php if ($is_oos): ?>
+            <div class="prod-oos-overlay">
+              <span class="prod-oos-label">Stok Habis</span>
+            </div>
+          <?php elseif ($p['id_produk']): ?>
+            <span class="prod-badge">Bestseller</span>
+          <?php endif; ?>
         </div>
         <div class="prod-info">
           <div class="prod-name-row">
@@ -36,13 +44,20 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
             <span class="prod-price">Rp <?= number_format($p['harga'], 0, ',', '.') ?></span>
           </div>
           <p><?= htmlspecialchars($p['deskripsi']) ?></p>
-          <a href="product_detail.php?id=<?= $pid ?>" class="btn-primary ripple-btn"
-            style="text-decoration:none;display:inline-block;margin-top:15px;vertical-align:middle;">
-            <?= ($i === 0 && $p['id_produk']) ? 'Detail &amp; Pesan' : 'Pesan' ?>
-          </a>
-          <button class="btn-cart-quick quick-add-cart ripple-btn" data-id="<?= $pid ?>" title="Tambah langsung ke keranjang">
-            <i class="fa-solid fa-cart-plus"></i>
-          </button>
+          <?php if ($is_oos): ?>
+            <span class="btn-out-of-stock">Stok Habis</span>
+            <button class="btn-cart-quick btn-disabled" disabled title="Stok Habis">
+              <i class="fa-solid fa-cart-plus"></i>
+            </button>
+          <?php else: ?>
+            <a href="product_detail.php?id=<?= $pid ?>" class="btn-primary ripple-btn"
+              style="text-decoration:none;display:inline-block;margin-top:15px;vertical-align:middle;">
+              <?= ($i === 0 && $p['id_produk']) ? 'Detail &amp; Pesan' : 'Pesan' ?>
+            </a>
+            <button class="btn-cart-quick quick-add-cart ripple-btn" data-id="<?= $pid ?>" title="Tambah langsung ke keranjang">
+              <i class="fa-solid fa-cart-plus"></i>
+            </button>
+          <?php endif; ?>
         </div>
       </div>
       <?php endforeach; ?>

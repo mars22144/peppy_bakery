@@ -3,6 +3,12 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 $base_url = '/peppy_bakery';
+
+// Calculate total cart quantity for badge
+$cart_badge_count = 0;
+if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+    $cart_badge_count = array_sum($_SESSION['cart']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -32,7 +38,12 @@ $base_url = '/peppy_bakery';
             <div class="nav-action-group">
                 <?php if (isset($_SESSION['role'])): ?>
                     <?php if ($_SESSION['role'] === 'customer'): ?>
-                        <a href="<?= $base_url ?>/cart.php" class="nav-icon-link"><i class="fas fa-shopping-cart"></i></a>
+                        <a href="<?= $base_url ?>/cart.php" class="nav-icon-link cart-icon-wrapper" id="cartIconDesktop">
+                            <i class="fas fa-shopping-cart"></i>
+                            <?php if ($cart_badge_count > 0): ?>
+                                <span class="cart-badge" id="cartBadgeDesktop"><?= $cart_badge_count ?></span>
+                            <?php endif; ?>
+                        </a>
                         <a href="<?= $base_url ?>/customer/orders.php" class="nav-icon-link"><i class="fas fa-user"></i></a>
                     <?php elseif ($_SESSION['role'] === 'admin'): ?>
                         <a href="<?= $base_url ?>/admin/index_admin.php" class="nav-icon-link" title="Admin Dashboard"><i class="fas fa-chart-line"></i></a>
@@ -54,7 +65,12 @@ $base_url = '/peppy_bakery';
             <a href="<?= $base_url ?>/about.php">About</a>
             <a href="<?= $base_url ?>/faq.php">FAQ</a>
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'customer'): ?>
-                <a href="<?= $base_url ?>/cart.php"><i class="fas fa-shopping-cart"></i> Cart</a>
+                <a href="<?= $base_url ?>/cart.php" class="cart-icon-wrapper" id="cartIconMobile">
+                    <i class="fas fa-shopping-cart"></i> Cart
+                    <?php if ($cart_badge_count > 0): ?>
+                        <span class="cart-badge cart-badge-mobile" id="cartBadgeMobile"><?= $cart_badge_count ?></span>
+                    <?php endif; ?>
+                </a>
                 <a href="<?= $base_url ?>/customer/orders.php"><i class="fas fa-user"></i> Pesanan</a>
                 <a href="<?= $base_url ?>/logout.php" class="mobile-contact">Logout</a>
             <?php else: ?>
