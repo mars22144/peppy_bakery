@@ -10,15 +10,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
 $pdo     = getDB();
 $success = isset($_GET['success']);
 
-// ── FETCH ORDERS WITH PAGINATION ─────────────────────────────────────────────
-$limit = 10;
-$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$offset = ($page - 1) * $limit;
-
-// Total orders count
-$total_data = $pdo->query('SELECT COUNT(*) FROM orders')->fetchColumn();
-$total_pages = ceil($total_data / $limit);
-
 // Fetch orders for this user
 $stmt = $pdo->prepare(
     'SELECT * FROM orders WHERE id_user = ? ORDER BY tgl_order DESC'
@@ -89,21 +80,6 @@ $status_class = [
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-                <?php if ($total_pages > 1): ?>
-    <div class="pagination">
-        <?php if ($page > 1): ?>
-            <a href="?page=<?= $page - 1 ?>" class="pagination-link">&laquo; Prev</a>
-        <?php endif; ?>
-        
-        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-            <a href="?page=<?= $i ?>" class="pagination-link <?= $i === $page ? 'active' : '' ?>"><?= $i ?></a>
-        <?php endfor; ?>
-        
-        <?php if ($page < $total_pages): ?>
-            <a href="?page=<?= $page + 1 ?>" class="pagination-link">Next &raquo;</a>
-        <?php endif; ?>
-    </div>
-    <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>
