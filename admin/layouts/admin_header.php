@@ -42,11 +42,6 @@ $base_url = '/peppy_bakery';
         <div>
             <h3 class="topbar-greeting">Halo, Admin!</h3>
         </div>
-        <div class="header-place">
-            <div class="topbar-avatar">
-                <i class="fas fa-user"></i>
-            </div>
-        </div>
     </div>
 
     <!-- Page Content -->
