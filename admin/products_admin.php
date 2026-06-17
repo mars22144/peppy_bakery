@@ -215,9 +215,6 @@ $products = $products_stmt->fetchAll();
                 <label>Upload Gambar</label>
                 <input type="file" name="image_file" accept="image/*" class="auth-input">
             </div>
-            <div class="modal-form-group modal-check">
-                <label><input type="checkbox" name="is_featured"> Jadikan Produk Unggulan</label>
-            </div>
             <div class="modal-footer">
                 <button type="button" class="btn-secondary" onclick="closeModal('modal-create')">Batal</button>
                 <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Simpan</button>
@@ -271,9 +268,6 @@ $products = $products_stmt->fetchAll();
             <div class="modal-form-group">
                 <label>Upload Gambar Baru</label>
                 <input type="file" name="image_file" accept="image/*" class="auth-input">
-            </div>
-            <div class="modal-form-group modal-check">
-                <label><input type="checkbox" name="is_featured" id="edit-featured"> Produk Unggulan</label>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn-secondary" onclick="closeModal('modal-edit')">Batal</button>
