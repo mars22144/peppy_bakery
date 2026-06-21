@@ -762,7 +762,7 @@ input[type=number]{
 }
 
 .featured-prod .prod-img-wrap img {
-  height: 380px;
+  height: 280px;
 }
 
 .prod-card:hover .prod-img-wrap img {
