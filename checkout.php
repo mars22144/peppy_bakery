@@ -16,6 +16,34 @@ if (empty($cart)) {
     header('Location: cart.php'); exit;
 }
 
+// Fetch products in cart
+$ids   = array_keys($cart);
+$in    = implode(',', array_fill(0, count($ids), '?'));
+$stmt  = $pdo->prepare("SELECT * FROM products WHERE id_produk IN ($in)");
+$stmt->execute($ids);
+$prods = $stmt->fetchAll(PDO::FETCH_UNIQUE);
+
+// Validate stock on page load
+$has_stock_error = false;
+foreach ($cart as $pid => $qty) {
+    if (isset($prods[$pid])) {
+        if ($qty > (int)$prods[$pid]['stok']) {
+            $has_stock_error = true;
+            if (!$is_direct) {
+                $_SESSION['cart'][$pid] = (int)$prods[$pid]['stok'];
+            }
+        }
+    } else {
+        if (!$is_direct) {
+            unset($_SESSION['cart'][$pid]);
+        }
+    }
+}
+if ($has_stock_error) {
+    $_SESSION['error'] = 'tidak bisa melebihi stok yang ada';
+    header('Location: cart.php'); exit;
+}
+
 // ── Handle checkout submission ────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $address = trim($_POST['address'] ?? '');
@@ -26,17 +54,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$address || !$phone || !$payment || !$kurir) {
         $error = 'Semua field wajib diisi.';
     } else {
-        // Fetch product prices from DB
-        $ids  = array_keys($cart);
-        $in   = implode(',', array_fill(0, count($ids), '?'));
-        $stmt = $pdo->prepare("SELECT * FROM products WHERE id_produk IN ($in)");
-        $stmt->execute($ids);
-        $prods = $stmt->fetchAll(PDO::FETCH_UNIQUE);
-
-        $total = 0;
+        // Validate stock again before committing order
+        $stock_ok = true;
         foreach ($cart as $pid => $qty) {
-            if (isset($prods[$pid])) $total += $prods[$pid]['harga'] * $qty;
+            if (!isset($prods[$pid]) || $qty > (int)$prods[$pid]['stok']) {
+                $stock_ok = false;
+                break;
+            }
         }
+
+        if (!$stock_ok) {
+            $error = 'Stok untuk produk di keranjang kamu tidak mencukupi atau telah berubah. Silakan kembali ke keranjang.';
+        } else {
+            $total = 0;
+            foreach ($cart as $pid => $qty) {
+                if (isset($prods[$pid])) $total += $prods[$pid]['harga'] * $qty;
+            }
 
         try {
             $pdo->beginTransaction();
@@ -93,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Exception $e) {
             $pdo->rollBack();
             $error = 'Gagal memproses pesanan: ' . $e->getMessage();
+        }
         }
     }
 }

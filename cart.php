@@ -23,13 +23,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pid = (int)($_POST['product_id'] ?? 0);
         $qty = max(1, (int)($_POST['qty'] ?? 1));
         if ($pid > 0) {
-            if (!isset($_SESSION['cart'])) {
-                $_SESSION['cart'] = [];
-            }
-            if (isset($_SESSION['cart'][$pid])) {
-                $_SESSION['cart'][$pid] += $qty;
-            } else {
-                $_SESSION['cart'][$pid] = $qty;
+            $stmt = $pdo->prepare("SELECT stok FROM products WHERE id_produk = ?");
+            $stmt->execute([$pid]);
+            $prod = $stmt->fetch();
+            if ($prod) {
+                $stock = (int)$prod['stok'];
+                $current_qty = isset($_SESSION['cart'][$pid]) ? $_SESSION['cart'][$pid] : 0;
+                if ($current_qty + $qty > $stock) {
+                    $_SESSION['error'] = 'tidak bisa melebihi stok yang ada';
+                    if (!isset($_SESSION['cart'])) {
+                        $_SESSION['cart'] = [];
+                    }
+                    $_SESSION['cart'][$pid] = $stock;
+                } else {
+                    if (!isset($_SESSION['cart'])) {
+                        $_SESSION['cart'] = [];
+                    }
+                    if (isset($_SESSION['cart'][$pid])) {
+                        $_SESSION['cart'][$pid] += $qty;
+                    } else {
+                        $_SESSION['cart'][$pid] = $qty;
+                    }
+                }
             }
         }
     }
@@ -38,18 +53,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pid = (int)($_POST['product_id'] ?? 0);
         $qty = max(1, (int)($_POST['qty'] ?? 1));
         if ($pid > 0) {
-            $_SESSION['direct_buy'] = [
-                $pid => $qty
-            ];
-            header('Location: checkout.php'); exit;
+            $stmt = $pdo->prepare("SELECT stok FROM products WHERE id_produk = ?");
+            $stmt->execute([$pid]);
+            $prod = $stmt->fetch();
+            if ($prod) {
+                $stock = (int)$prod['stok'];
+                if ($qty > $stock) {
+                    $_SESSION['error'] = 'tidak bisa melebihi stok yang ada';
+                } else {
+                    $_SESSION['direct_buy'] = [
+                        $pid => $qty
+                    ];
+                    header('Location: checkout.php'); exit;
+                }
+            }
         }
     }
     // Update quantity
     if ($action === 'update_qty') {
         $pid = (int)($_POST['product_id'] ?? 0);
         $qty = max(1, (int)($_POST['qty'] ?? 1));
-        if (isset($_SESSION['cart'][$pid])) {
-            $_SESSION['cart'][$pid] = $qty;
+        if ($pid > 0) {
+            $stmt = $pdo->prepare("SELECT stok FROM products WHERE id_produk = ?");
+            $stmt->execute([$pid]);
+            $prod = $stmt->fetch();
+            if ($prod) {
+                $stock = (int)$prod['stok'];
+                if ($qty > $stock) {
+                    $_SESSION['error'] = 'tidak bisa melebihi stok yang ada';
+                    if (isset($_SESSION['cart'][$pid])) {
+                        $_SESSION['cart'][$pid] = $stock;
+                    }
+                } else {
+                    if (isset($_SESSION['cart'][$pid])) {
+                        $_SESSION['cart'][$pid] = $qty;
+                    }
+                }
+            }
         }
     }
     // Remove item
@@ -79,6 +119,11 @@ if (!empty($cart)) {
     foreach ($cart as $pid => $qty) {
         if (isset($prods[$pid])) {
             $p = $prods[$pid];
+            // Automatic correction if cart qty exceeds DB stock
+            if ($qty > (int)$p['stok']) {
+                $qty = (int)$p['stok'];
+                $_SESSION['cart'][$pid] = $qty;
+            }
             $subtotal      = $p['harga'] * $qty;
             $grand_total  += $subtotal;
             $cart_rows[]   = ['product' => $p, 'qty' => $qty, 'subtotal' => $subtotal];
@@ -90,6 +135,13 @@ if (!empty($cart)) {
 <section class="page-section active cart-section">
     <div class="page-medium">
         <h2 class="cart-page-title">Keranjang Belanja</h2>
+
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="auth-alert auth-alert--error" style="margin-bottom: 20px;">
+                <?= htmlspecialchars($_SESSION['error']) ?>
+            </div>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
 
         <?php if (empty($cart_rows)): ?>
             <div class="cart-card" style="text-align:center;padding:60px 20px;">
