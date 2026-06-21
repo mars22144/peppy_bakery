@@ -6,6 +6,10 @@
 
         <div class="faq-card">
             <div class="faq-item">
+                <h4 class="faq-question">Bagaimana Methode Pembayarannya?</h4>
+                <p class="faq-answer">Kami sedang berupaya mengintegrasikan sistem payment gateway demi kenyamanan Anda bertransaksi. Selama proses pengembangan ini, pembayaran Anda akan diproses secara manual oleh tim kami.</p>
+            </div>
+            <div class="faq-item">
                 <h4 class="faq-question">Apakah roti di Peppy Bakery menggunakan ragi alami (sourdough)?</h4>
                 <p class="faq-answer">Ya, sebagian besar roti artisan kami, termasuk varian Sourdough Loaf, dibuat menggunakan ragi alami hasil fermentasi panjang yang membuat teksturnya lebih kenyal dan rasanya khas.</p>
             </div>

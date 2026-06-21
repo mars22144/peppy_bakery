@@ -33,6 +33,7 @@ if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
                 <li><a href="<?= $base_url ?>/products.php" class="nav-link">Product</a></li>
                 <li><a href="<?= $base_url ?>/about.php" class="nav-link">About</a></li>
                 <li><a href="<?= $base_url ?>/faq.php" class="nav-link">FAQ</a></li>
+                <li><a href="https://wa.me/6281227101516" class="nav-link" target="_blank">Bukti Bayar</a></li>
             </ul>
 
             <div class="nav-action-group">
