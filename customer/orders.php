@@ -10,7 +10,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
 $pdo     = getDB();
 $success = isset($_GET['success']);
 
-$limit = 5;
+$limit = 10;
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page - 1) * $limit;
 
