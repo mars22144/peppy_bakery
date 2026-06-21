@@ -2929,29 +2929,6 @@ a.btn-primary {
   min-width: 200px;
 }
 
-/* Improve button target / visual cue for detail link */
-.orders-detail-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-  background-color: var(--orange-light);
-  color: white !important;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  min-width: 70px;
-  min-height: 40px;
-  box-sizing: border-box;
-  text-align: center;
-  transition: background-color 0.2s;
-}
-
-.orders-detail-link:hover {
-  background-color: var(--orange);
-  text-decoration: none;
-}
-
 @media (max-width: 768px) {
   .order-info-grid {
     flex-direction: column;
