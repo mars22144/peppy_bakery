@@ -15,6 +15,7 @@ $base_url = '/peppy_bakery';
     <title>Admin - Peppy Bakery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="stylesheet" href="<?= $base_url ?>/assets/css/admin.css">
+    <link href="<?= $base_url ?>/assets/img/logo-baru-transp.svg" rel="shortcut icon" sizes="16x16 32x32" type="image/svg+xml">
 </head>
 <body>
 
