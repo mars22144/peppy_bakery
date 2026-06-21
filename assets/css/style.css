@@ -1042,10 +1042,6 @@ input[type=number]{
   }
 }
 
-/* =========================================================
-   TAMBAHAN: Class-class dari inline style yang dipindahkan
-   ========================================================= */
-
 /* === NAVBAR: action group (cart + login/logout) === */
 .nav-action-group {
   display: flex;
@@ -2910,5 +2906,55 @@ a.btn-primary {
   to {
     transform: translateY(30px);
     opacity: 0;
+  }
+}
+
+/* === RESPONSIVE TABLES & CARDS (FOR ORDERS & ORDER DETAIL) === */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 20px;
+}
+
+.order-info-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.order-info-grid > div {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Improve button target / visual cue for detail link */
+.orders-detail-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: var(--orange-light);
+  color: white !important;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  min-width: 70px;
+  min-height: 40px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+
+.orders-detail-link:hover {
+  background-color: var(--orange);
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .order-info-grid {
+    flex-direction: column;
+    gap: 20px;
   }
 }

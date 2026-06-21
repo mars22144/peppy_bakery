@@ -60,7 +60,7 @@ $status_class = [
 
         <!-- Info Card -->
         <div class="orders-card" style="margin-bottom:20px;padding:20px 24px;">
-            <div style="display:flex;justify-content:space-around;gap:50px;">
+            <div class="order-info-grid">
                 <div>
                     <label style="color:#888;font-size:0.8rem;display:block;margin-bottom:4px;text-transform:uppercase;">Tanggal Pesanan</label>
                     <p style="font-weight:600;"><?= date('d M Y, H:i', strtotime($order['tgl_order'])) ?></p>
@@ -88,39 +88,39 @@ $status_class = [
         <!-- Items -->
         <div class="orders-card">
             <h3 style="margin-bottom:16px;font-size:1rem;color:#555;">Item Pesanan</h3>
-            <table class="orders-table">
-                <thead>
-                    <tr>
-                        <th>Produk</th>
-                        <th>Harga</th>
-                        <th>Qty</th>
-                        <th>Subtotal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($items as $item): ?>
-                    <tr>
-                        <td style="display:flex;align-items:center;gap:10px;">
-                            <img src="<?= htmlspecialchars($item['foto'] ?: 'https://via.placeholder.com/50') ?>"
-                                style="width:44px;height:44px;object-fit:cover;border-radius:6px;" alt="">
-                            <span><?= htmlspecialchars($item['nama_produk']) ?></span>
-                        </td>
-                        <td>Rp <?= number_format($item['harga'], 0, ',', '.') ?></td>
-                        <td><?= $item['qty'] ?></td>
-                        <td>Rp <?= number_format($item['sub_total'], 0, ',', '.') ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" style="text-align:right;font-weight:700;padding:14px 15px;">Total</td>
-                        <td style="font-weight:700;color:#e07b39;">Rp <?= number_format($order['ttl_harga'], 0, ',', '.') ?></td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="table-responsive">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Produk</th>
+                            <th>Harga</th>
+                            <th>Qty</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($items as $item): ?>
+                        <tr>
+                            <td style="display:flex;align-items:center;gap:10px;">
+                                <img src="<?= htmlspecialchars($item['foto'] ?: 'https://via.placeholder.com/50') ?>"
+                                    style="width:44px;height:44px;object-fit:cover;border-radius:6px;" alt="">
+                                <span><?= htmlspecialchars($item['nama_produk']) ?></span>
+                            </td>
+                            <td>Rp <?= number_format($item['harga'], 0, ',', '.') ?></td>
+                            <td><?= $item['qty'] ?></td>
+                            <td>Rp <?= number_format($item['sub_total'], 0, ',', '.') ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" style="text-align:right;font-weight:700;padding:14px 15px;">Total</td>
+                            <td style="font-weight:700;color:#e07b39;">Rp <?= number_format($order['ttl_harga'], 0, ',', '.') ?></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
-    </div>
-</section>
     </div>
 </section>
 

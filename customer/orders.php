@@ -60,34 +60,36 @@ $status_class = [
                     <a href="../products.php" class="btn-primary ripple-btn" style="display:inline-block;margin-top:16px;">Belanja Sekarang</a>
                 </div>
             <?php else: ?>
-                <table class="orders-table">
-                    <thead>
-                        <tr>
-                            <th>ID Pesanan</th>
-                            <th>Tanggal</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($orders as $o): ?>
+                <div class="table-responsive">
+                    <table class="orders-table">
+                        <thead>
                             <tr>
-                                <td class="td-id">#ORD-<?= str_pad($o['id_order'], 4, '0', STR_PAD_LEFT) ?></td>
-                                <td class="td-date"><?= date('d M Y', strtotime($o['tgl_order'])) ?></td>
-                                <td class="td-total">Rp <?= number_format($o['ttl_harga'], 0, ',', '.') ?></td>
-                                <td>
-                                    <span class="status-badge <?= $status_class[$o['status_order']] ?? '' ?>">
-                                        <?= $status_label[$o['status_order']] ?? $o['status_order'] ?>
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="order_detail.php?id=<?= $o['id_order'] ?>" class="orders-detail-link">Detail</a>
-                                </td>
+                                <th>ID Pesanan</th>
+                                <th>Tanggal</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($orders as $o): ?>
+                                <tr>
+                                    <td class="td-id">#ORD-<?= str_pad($o['id_order'], 4, '0', STR_PAD_LEFT) ?></td>
+                                    <td class="td-date"><?= date('d M Y', strtotime($o['tgl_order'])) ?></td>
+                                    <td class="td-total">Rp <?= number_format($o['ttl_harga'], 0, ',', '.') ?></td>
+                                    <td>
+                                        <span class="status-badge <?= $status_class[$o['status_order']] ?? '' ?>">
+                                            <?= $status_label[$o['status_order']] ?? $o['status_order'] ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="order_detail.php?id=<?= $o['id_order'] ?>" class="orders-detail-link">Detail</a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php endif; ?>
             <?php if ($total_pages > 1): ?>
                 <div class="pagination">
