@@ -272,7 +272,6 @@ $related = array_map(fn($r) => [
             </div>
           <?php else: ?>
             <div class="detail-login-notice">
-              <span>🔒</span>
               <span>Silakan <a href="login.php">login</a> atau <a href="register.php">daftar</a> untuk memesan produk ini.</span>
             </div>
           <?php endif; ?>
