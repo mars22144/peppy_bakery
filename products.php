@@ -35,7 +35,6 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
               <span class="prod-oos-label">Stok Habis</span>
             </div>
           <?php elseif ($p['id_produk']): ?>
-            <span class="prod-badge">Bestseller</span>
           <?php endif; ?>
         </div>
         <div class="prod-info">
