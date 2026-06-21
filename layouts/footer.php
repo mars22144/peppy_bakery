@@ -20,7 +20,7 @@
 </footer>
 
 <?php $base_url = '/peppy_bakery'; ?>
-<div class='wbnz-back-to-top-button' data-webynize-id='11216'></div><script defer src='https://widgets.webynize.com/back-to-top-button.js'></script>
+<button onclick="topFunction()" id="myBtn" title="Go to top" class="fa-solid fa-arrow-up"></button>
 <script src="<?= $base_url ?>/assets/js/main.js"></script>
 </body>
 </html>
