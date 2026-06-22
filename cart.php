@@ -97,10 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pid = (int)($_POST['product_id'] ?? 0);
         unset($_SESSION['cart'][$pid]);
     }
-    // Clear cart
-    if ($action === 'clear') {
-        $_SESSION['cart'] = [];
-    }
+    
     header('Location: cart.php'); exit;
 }
 
