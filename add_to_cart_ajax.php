@@ -66,9 +66,12 @@ try {
     }
     $_SESSION['cart'][$pid] = $cart_qty + $qty;
 
+    $total_qty = array_sum($_SESSION['cart']);
+
     echo json_encode([
         'status' => 'success',
-        'message' => htmlspecialchars($product['nama_produk']) . ' berhasil ditambahkan ke keranjang.'
+        'message' => htmlspecialchars($product['nama_produk']) . ' berhasil ditambahkan ke keranjang.',
+        'total_qty' => $total_qty
     ]);
     exit;
 

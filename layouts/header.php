@@ -41,9 +41,7 @@ if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
                     <?php if ($_SESSION['role'] === 'customer'): ?>
                         <a href="<?= $base_url ?>/cart.php" class="nav-icon-link cart-icon-wrapper" id="cartIconDesktop">
                             <i class="fas fa-shopping-cart"></i>
-                            <?php if ($cart_badge_count > 0): ?>
-                                <span class="cart-badge" id="cartBadgeDesktop"><?= $cart_badge_count ?></span>
-                            <?php endif; ?>
+                            <span class="cart-badge" id="cartBadgeDesktop" style="<?= $cart_badge_count > 0 ? '' : 'display: none;' ?>"><?= $cart_badge_count ?></span>
                         </a>
                         <a href="<?= $base_url ?>/customer/orders.php" class="nav-icon-link"><i class="fas fa-user"></i></a>
                     <?php elseif ($_SESSION['role'] === 'admin'): ?>
@@ -68,9 +66,7 @@ if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'customer'): ?>
                 <a href="<?= $base_url ?>/cart.php" class="cart-icon-wrapper" id="cartIconMobile">
                     <i class="fas fa-shopping-cart"></i> Cart
-                    <?php if ($cart_badge_count > 0): ?>
-                        <span class="cart-badge cart-badge-mobile" id="cartBadgeMobile"><?= $cart_badge_count ?></span>
-                    <?php endif; ?>
+                        <span class="cart-badge cart-badge-mobile" id="cartBadgeMobile" style="<?= $cart_badge_count > 0 ? '' : 'display: none;' ?>"><?= $cart_badge_count ?></span>
                 </a>
                 <a href="<?= $base_url ?>/customer/orders.php"><i class="fas fa-user"></i> Pesanan</a>
                 <a href="<?= $base_url ?>/logout.php" class="mobile-contact">Logout</a>

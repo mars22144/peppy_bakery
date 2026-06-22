@@ -95,7 +95,25 @@ document.querySelectorAll('.quick-add-cart').forEach(button => {
         })
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
+            if (data.status === 'success') {
+                alert(data.message);
+                
+                // Update Desktop Badge
+                const badgeDesktop = document.getElementById('cartBadgeDesktop');
+                if (badgeDesktop) {
+                    badgeDesktop.textContent = data.total_qty;
+                    badgeDesktop.style.display = 'inline-block';
+                }
+                
+                // Update Mobile Badge
+                const badgeMobile = document.getElementById('cartBadgeMobile');
+                if (badgeMobile) {
+                    badgeMobile.textContent = data.total_qty;
+                    badgeMobile.style.display = 'inline-block';
+                }
+            } else {
+                alert(data.message);
+            }
         })
         .catch(error => {
             console.error('Error:', error);
