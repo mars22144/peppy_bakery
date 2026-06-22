@@ -231,7 +231,7 @@ $related = array_map(fn($r) => [
           </div>
           <div class="detail-meta-row">
             <span class="detail-meta-label">Berat</span>
-            <span class="detail-meta-value"><?= $p['weight'] ?></span>
+            <span class="detail-meta-value"><?= $p['weight'] ?>gr</span>
           </div>
           <div class="detail-meta-row">
             <span class="detail-meta-label">Ketahanan</span>
