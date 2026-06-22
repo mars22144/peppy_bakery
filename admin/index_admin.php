@@ -23,7 +23,7 @@ $recent = $pdo->query(
 )->fetchAll();
 
 function fmt_rupiah($n) {
-    if ($n >= 1000000) return 'Rp ' . number_format($n / 1000000, 1) . 'M';
+    if ($n >= 1000000) return 'Rp ' . number_format($n / 1000000, 1) . 'Jt';
     if ($n >= 1000)    return 'Rp ' . number_format($n / 1000, 0) . 'rb';
     return 'Rp ' . number_format($n, 0, ',', '.');
 }
