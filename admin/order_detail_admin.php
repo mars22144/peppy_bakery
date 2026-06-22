@@ -79,7 +79,15 @@ $status_class = [
         </div>
         <div style="padding:16px 20px;line-height:1.8;">
             <p><strong>Tanggal:</strong> <?= date('d M Y, H:i', strtotime($order['tgl_order'])) ?></p>
-            <p><strong>Metode Bayar:</strong> <?= htmlspecialchars(strtoupper($order['metode_nayar'])) ?></p>
+            <p><strong>Metode Bayar:</strong>
+                <?php
+                    $display_metode = strtoupper($order['metode_nayar']);
+                    if (($order['status_bayar'] ?? 'unpaid') === 'paid') {
+                        $display_metode .= '(paid)';
+                    }
+                    echo htmlspecialchars($display_metode);
+                ?>
+            </p>
             <p><strong>Status Bayar:</strong> <span class="status-pill"><?= strtoupper($order['status_bayar'] ?: 'unpaid') ?></span></p>
             <?php if ($order['bukti_bayar']): ?>
                 <p><strong>Bukti:</strong> <a href="<?= htmlspecialchars($order['bukti_bayar']) ?>" target="_blank">Lihat Bukti</a></p>
