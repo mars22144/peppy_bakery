@@ -20,8 +20,17 @@ if (isset($_POST['action']) && $_POST['action'] === 'update_payment_status') {
     $id     = (int)($_POST['id'] ?? 0);
     $status = $_POST['status'] ?? '';
     if ($id && in_array($status, ['unpaid', 'paid'])) {
-        $pdo->prepare('UPDATE payments SET status_bayar = ? WHERE id_order = ?')->execute([$status, $id]);
-        $msg = 'Status pembayaran berhasil diperbarui.';
+        // Check if order is cancelled
+        $check = $pdo->prepare('SELECT status_order FROM orders WHERE id_order = ?');
+        $check->execute([$id]);
+        $order = $check->fetch();
+        
+        if ($order && $order['status_order'] === 'dibatalkan') {
+            $msg = 'Gagal: Status pembayaran tidak dapat diganti untuk pesanan yang dibatalkan.';
+        } else {
+            $pdo->prepare('UPDATE payments SET status_bayar = ? WHERE id_order = ?')->execute([$status, $id]);
+            $msg = 'Status pembayaran berhasil diperbarui.';
+        }
     }
 }
 
@@ -49,7 +58,11 @@ $orders = $orders_stmt->fetchAll();
 ?>
 
 <?php if ($msg): ?>
-    <div class="admin-alert admin-alert--success"><?= htmlspecialchars($msg) ?></div>
+    <?php
+        $is_error = strpos($msg, 'Gagal') !== false;
+        $alert_class = $is_error ? 'admin-alert--error' : 'admin-alert--success';
+    ?>
+    <div class="admin-alert <?= $alert_class ?>"><?= htmlspecialchars($msg) ?></div>
 <?php endif; ?>
 
 <div class="table-container">
@@ -70,7 +83,7 @@ $orders = $orders_stmt->fetchAll();
         </thead>
         <tbody>
             <?php foreach ($orders as $o): ?>
-                <?php
+            <?php
                 $status_map = [
                     'diproses'   => 'status-pill--processing',
                     'dikirim'    => 'status-pill--shipped',
@@ -78,58 +91,55 @@ $orders = $orders_stmt->fetchAll();
                     'dibatalkan' => 'status-pill--cancelled',
                 ];
                 $sc = $status_map[$o['status_order']] ?? '';
-                ?>
-                <tr>
-                    <td>#ORD-<?= str_pad($o['id_order'], 5, '0', STR_PAD_LEFT) ?></td>
-                    <td>
-                        <?= htmlspecialchars($o['customer_name']) ?>
-                        <br><small style="color:#aaa;"><?= htmlspecialchars($o['customer_email']) ?></small>
-                    </td>
-                    <td><?= date('d M Y', strtotime($o['tgl_order'])) ?></td>
-                    <td>Rp <?= number_format($o['ttl_harga'], 0, ',', '.') ?></td>
-                    <td>
-                        <form method="POST" style="display:inline-flex;align-items:center;gap:6px;">
-                            <input type="hidden" name="action" value="update_status">
+            ?>
+            <tr>
+                <td>#ORD-<?= str_pad($o['id_order'], 5, '0', STR_PAD_LEFT) ?></td>
+                <td>
+                    <?= htmlspecialchars($o['customer_name']) ?>
+                    <br><small style="color:#aaa;"><?= htmlspecialchars($o['customer_email']) ?></small>
+                </td>
+                <td><?= date('d M Y', strtotime($o['tgl_order'])) ?></td>
+                <td>Rp <?= number_format($o['ttl_harga'], 0, ',', '.') ?></td>
+                <td>
+                    <form method="POST" style="display:inline-flex;align-items:center;gap:6px;">
+                        <input type="hidden" name="action" value="update_status">
+                        <input type="hidden" name="id" value="<?= $o['id_order'] ?>">
+                        <select name="status" class="order-status-select">
+                            <option value="diproses" <?= $o['status_order'] === 'diproses'   ? 'selected' : '' ?>>Diproses</option>
+                            <option value="dikirim" <?= $o['status_order'] === 'dikirim'    ? 'selected' : '' ?>>Dikirim</option>
+                            <option value="selesai" <?= $o['status_order'] === 'selesai'    ? 'selected' : '' ?>>Selesai</option>
+                            <option value="dibatalkan" <?= $o['status_order'] === 'dibatalkan' ? 'selected' : '' ?>>Dibatalkan</option>
+                        </select>
+                        <button type="submit" class="btn-primary btn-sm"><i class="fas fa-save"></i></button>
+                    </form>
+                </td>
+                <td>
+                    <form method="POST" style="display:inline-flex;align-items:center;gap:4px;">
+                            <input type="hidden" name="action" value="update_payment_status">
                             <input type="hidden" name="id" value="<?= $o['id_order'] ?>">
-                            <select name="status" class="order-status-select">
-                                <option value="diproses" <?= $o['status_order'] === 'diproses'   ? 'selected' : '' ?>>Diproses</option>
-                                <option value="dikirim" <?= $o['status_order'] === 'dikirim'    ? 'selected' : '' ?>>Dikirim</option>
-                                <option value="selesai" <?= $o['status_order'] === 'selesai'    ? 'selected' : '' ?>>Selesai</option>
-                                <option value="dibatalkan" <?= $o['status_order'] === 'dibatalkan' ? 'selected' : '' ?>>Dibatalkan</option>
+                            <select name="status" class="order-status-select" style="width:100px;">
+                                <option value="unpaid" <?= ($o['status_bayar'] ?? 'unpaid') === 'unpaid' ? 'selected' : '' ?>>Unpaid</option>
+                                <option value="paid" <?= ($o['status_bayar'] ?? 'unpaid') === 'paid'   ? 'selected' : '' ?>>Paid</option>
                             </select>
-                            <button type="submit" class="btn-primary btn-sm"><i class="fas fa-save"></i></button>
+                            <button type="submit" class="btn-secondary btn-sm" title="Simpan Status Bayar">
+                                <i class="fas fa-credit-card"></i>
+                            </button>
                         </form>
-                    </td>
-                    <td>
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <form method="POST" style="display:inline-flex;align-items:center;gap:4px;">
-                                <input type="hidden" name="action" value="update_payment_status">
-                                <input type="hidden" name="id" value="<?= $o['id_order'] ?>">
-                                <select name="status" class="order-status-select" style="width:100px;">
-                                    <option value="unpaid" <?= ($o['status_bayar'] ?? 'unpaid') === 'unpaid' ? 'selected' : '' ?>>Unpaid</option>
-                                    <option value="paid" <?= ($o['status_bayar'] ?? 'unpaid') === 'paid'   ? 'selected' : '' ?>>Paid</option>
-                                </select>
-                                <button type="submit" class="btn-secondary btn-sm" title="Simpan Status Bayar">
-                                    <i class="fas fa-credit-card"></i>
-                                </button>
-                            </form>
-                    </td>
-                    <td>
-
+                </td>
+                <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
                         <a href="order_detail_admin.php?id=<?= $o['id_order'] ?>" class="btn-secondary btn-sm" title="Lihat Detail">
                             <i class="fas fa-eye"></i>
                         </a>
-</div>
-</td>
-</tr>
-<?php endforeach; ?>
-<?php if (empty($orders)): ?>
-    <tr>
-        <td colspan="6" style="text-align:center;color:#aaa;">Belum ada pesanan.</td>
-    </tr>
-<?php endif; ?>
-</tbody>
-</table>
+                    </div>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+            <?php if (empty($orders)): ?>
+            <tr><td colspan="6" style="text-align:center;color:#aaa;">Belum ada pesanan.</td></tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
 
 <?php if ($total_pages > 1): ?>
     <div class="pagination">
