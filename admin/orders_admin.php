@@ -11,8 +11,42 @@ if (isset($_POST['action']) && $_POST['action'] === 'update_status') {
     $status = $_POST['status'] ?? '';
     $allowed = ['diproses', 'dikirim', 'selesai', 'dibatalkan'];
     if ($id && in_array($status, $allowed)) {
-        $pdo->prepare('UPDATE orders SET status_order = ? WHERE id_order = ?')->execute([$status, $id]);
-        $msg = 'Status pesanan berhasil diperbarui.';
+        if ($status === 'dibatalkan') {
+            // Check current status to prevent double stock restore
+            $cek = $pdo->prepare('SELECT status_order FROM orders WHERE id_order = ?');
+            $cek->execute([$id]);
+            $current = $cek->fetch();
+
+            if ($current && $current['status_order'] !== 'dibatalkan') {
+                try {
+                    $pdo->beginTransaction();
+
+                    // Restore stock from order_details
+                    $items_stmt = $pdo->prepare('SELECT id_produk, qty FROM order_details WHERE id_order = ?');
+                    $items_stmt->execute([$id]);
+                    $cancel_items = $items_stmt->fetchAll();
+
+                    $restore_stmt = $pdo->prepare('UPDATE products SET stok = stok + ? WHERE id_produk = ?');
+                    foreach ($cancel_items as $item) {
+                        $restore_stmt->execute([$item['qty'], $item['id_produk']]);
+                    }
+
+                    // Update order status
+                    $pdo->prepare('UPDATE orders SET status_order = ? WHERE id_order = ?')->execute([$status, $id]);
+
+                    $pdo->commit();
+                    $msg = 'Pesanan dibatalkan dan stok telah dikembalikan.';
+                } catch (Exception $e) {
+                    $pdo->rollBack();
+                    $msg = 'Gagal membatalkan pesanan: ' . $e->getMessage();
+                }
+            } else {
+                $msg = 'Pesanan sudah dibatalkan sebelumnya.';
+            }
+        } else {
+            $pdo->prepare('UPDATE orders SET status_order = ? WHERE id_order = ?')->execute([$status, $id]);
+            $msg = 'Status pesanan berhasil diperbarui.';
+        }
     }
 }
 

@@ -22,9 +22,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $order_data = $cek->fetch();
     
     if ($order_data && $order_data['status_order'] === 'pending') {
-        // Cancel the order
-        $upd = $pdo->prepare("UPDATE orders SET status_order = 'dibatalkan' WHERE id_order = ?");
-        $upd->execute([$cancel_id]);
+        try {
+            $pdo->beginTransaction();
+
+            // Restore stock from order_details
+            $items_stmt = $pdo->prepare('SELECT id_produk, qty FROM order_details WHERE id_order = ?');
+            $items_stmt->execute([$cancel_id]);
+            $cancel_items = $items_stmt->fetchAll();
+
+            $restore_stmt = $pdo->prepare('UPDATE products SET stok = stok + ? WHERE id_produk = ?');
+            foreach ($cancel_items as $item) {
+                $restore_stmt->execute([$item['qty'], $item['id_produk']]);
+            }
+
+            // Cancel the order
+            $upd = $pdo->prepare("UPDATE orders SET status_order = 'dibatalkan' WHERE id_order = ?");
+            $upd->execute([$cancel_id]);
+
+            $pdo->commit();
+        } catch (Exception $e) {
+            $pdo->rollBack();
+        }
         
         header("Location: order_detail.php?id=$cancel_id&cancel_success=1");
         exit;
@@ -84,7 +102,7 @@ $status_class = [
 
         <?php if (isset($_GET['cancel_success'])): ?>
             <div style="background:#e8f5e9; color:#2e7d32; border:1px solid #a5d6a7; padding:12px 16px; border-radius:8px; margin-bottom:20px; font-size:0.9rem;">
-                ✓ Pesanan Anda berhasil dibatalkan.
+                Pesanan Anda berhasil dibatalkan.
             </div>
         <?php endif; ?>
 
