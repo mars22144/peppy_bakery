@@ -1,6 +1,9 @@
 <?php
 require_once '../config/database.php';
-include '../layouts/header.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
     header('Location: ../login.php'); exit;
@@ -8,6 +11,27 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
 
 $pdo = getDB();
 $id  = (int)($_GET['id'] ?? 0);
+
+// Handle POST cancel order
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cancel_order') {
+    $cancel_id = (int)($_POST['order_id'] ?? 0);
+    
+    // Check ownership and status
+    $cek = $pdo->prepare('SELECT status_order FROM orders WHERE id_order = ? AND id_user = ?');
+    $cek->execute([$cancel_id, $_SESSION['user_id']]);
+    $order_data = $cek->fetch();
+    
+    if ($order_data && $order_data['status_order'] === 'pending') {
+        // Cancel the order
+        $upd = $pdo->prepare("UPDATE orders SET status_order = 'dibatalkan' WHERE id_order = ?");
+        $upd->execute([$cancel_id]);
+        
+        header("Location: order_detail.php?id=$cancel_id&cancel_success=1");
+        exit;
+    }
+}
+
+include '../layouts/header.php';
 
 // Fetch order with shipping and payment — must belong to this user
 $stmt = $pdo->prepare(
@@ -58,6 +82,12 @@ $status_class = [
             <h2 style="margin-top:10px;">Detail Pesanan #ORD-<?= str_pad($order['id_order'], 4, '0', STR_PAD_LEFT) ?></h2>
         </div>
 
+        <?php if (isset($_GET['cancel_success'])): ?>
+            <div style="background:#e8f5e9; color:#2e7d32; border:1px solid #a5d6a7; padding:12px 16px; border-radius:8px; margin-bottom:20px; font-size:0.9rem;">
+                ✓ Pesanan Anda berhasil dibatalkan.
+            </div>
+        <?php endif; ?>
+
         <!-- Info Card -->
         <div class="orders-card" style="margin-bottom:20px;padding:20px 24px;">
             <div class="order-info-grid">
@@ -83,6 +113,18 @@ $status_class = [
                     <p><strong><?= htmlspecialchars(strtoupper($order['kurir'])) ?></strong></p>
                 </div>
             </div>
+
+            <?php if ($order['status_order'] === 'pending'): ?>
+                <div style="margin-top:20px; padding-top:15px; border-top:1px solid #eee; text-align:right;">
+                    <form action="order_detail.php?id=<?= $id ?>" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?');" style="display:inline-block;">
+                        <input type="hidden" name="action" value="cancel_order">
+                        <input type="hidden" name="order_id" value="<?= $id ?>">
+                        <button type="submit" class="btn-dark ripple-btn" style="background:#e53935; border:none; padding:10px 20px; font-weight:600; color:#fff; border-radius:6px; cursor:pointer;">
+                            Batalkan Pesanan
+                        </button>
+                    </form>
+                </div>
+            <?php endif; ?>
         </div>
 
         <!-- Items -->
