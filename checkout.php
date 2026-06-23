@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             $ins_pay->execute([$order_id, $payment]);
 
-            // Generate auto no_resi (e.g. PBK-JNE-123456789)
+            // Generate auto no_resi
             $clean_kurir = preg_replace('/[^A-Za-z0-9]/', '', $kurir);
             $no_resi     = 'PBK-' . strtoupper($clean_kurir) . '-' . rand(100000000, 999999999);
 
