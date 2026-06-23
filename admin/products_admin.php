@@ -200,7 +200,7 @@ $products = $products_stmt->fetchAll();
             <div class="modal-row">
                 <div class="modal-form-group">
                     <label>Berat (dalam satuan gram)</label>
-                    <input type="text" name="berat" class="auth-input" placeholder="250gr">
+                    <input type="text" name="berat" class="auth-input" placeholder="250">
                 </div>
                 <div class="modal-form-group">
                     <label>Ketahanan (misal: 3 hari)</label>
