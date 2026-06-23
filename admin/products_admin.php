@@ -208,10 +208,6 @@ $products = $products_stmt->fetchAll();
                 </div>
             </div>
             <div class="modal-form-group">
-                <label>URL Gambar (opsional jika upload)</label>
-                <input type="text" name="image_url" class="auth-input" placeholder="https://...">
-            </div>
-            <div class="modal-form-group">
                 <label>Upload Gambar</label>
                 <input type="file" name="image_file" accept="image/*" class="auth-input">
             </div>
