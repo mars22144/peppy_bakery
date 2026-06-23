@@ -47,7 +47,7 @@ function fmt_rupiah($n) {
         <div class="stat-info"><h4>Pelanggan Aktif</h4><h2><?= number_format($total_customers) ?></h2></div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-wallet"></i></div>
+        <div class="stat-icon"><i class="fas fa-credit-card"></i></div>
         <div class="stat-info"><h4>Pendapatan (Bulan ini)</h4><h2><?= fmt_rupiah($revenue_month) ?></h2></div>
     </div>
 </div>
