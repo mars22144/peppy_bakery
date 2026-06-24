@@ -35,7 +35,7 @@ Sebelum memulai, pastikan Anda telah menginstal:
 1.  **Clone Repositori**
     Buka terminal atau Git Bash, lalu jalankan perintah berikut untuk meng-clone repositori ini:
     ```bash
-    git clone [https://github.com/mars22144/peppy-s_bakery.git](https://github.com/mars22144/peppy-s_bakery.git)
+    git clone https://github.com/mars22144/peppy-s_bakery.git
     ```
 
 2.  **Masuk ke Direktori Project**
