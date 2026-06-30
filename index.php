@@ -2,7 +2,7 @@
 require_once 'config/database.php';
 $pdo = getDB();
 
-// Fetch top 2 selling products
+// top 2 product terlaris
 $stmt = $pdo->prepare("
     SELECT p.*, SUM(od.qty) as total_terjual 
     FROM products p 
@@ -16,7 +16,7 @@ $stmt = $pdo->prepare("
 $stmt->execute();
 $featured_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// If we have less than 2 products from sales, fallback to latest products
+// menampilkan prpduct terlaris,  jika product < 2 tampilkan product terbaru
 if (count($featured_products) < 2) {
     $exclude_ids = array_column($featured_products, 'id_produk');
     $placeholders = count($exclude_ids) > 0 ? implode(',', array_fill(0, count($exclude_ids), '?')) : '';
