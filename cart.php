@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     unset($_SESSION['direct_buy']);
 }
 
-// ── Handle cart actions ───────────────────────────────────────────────────
+// cart
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
