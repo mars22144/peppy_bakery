@@ -53,7 +53,7 @@ $stmt = $pdo->prepare('SELECT * FROM products WHERE id_produk = ? LIMIT 1');
 $stmt->execute([$product_id]);
 $db_product = $stmt->fetch();
 
-// Fetch reviews from DB
+// review 
 $rev_stmt = $pdo->prepare('
     SELECT r.*, u.nama AS user_name 
     FROM reviews r 
@@ -64,7 +64,6 @@ $rev_stmt = $pdo->prepare('
 $rev_stmt->execute([$product_id]);
 $db_reviews = $rev_stmt->fetchAll();
 
-// Calculate review metrics
 $review_count = count($db_reviews);
 $total_rating = 0;
 $rating_counts = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
