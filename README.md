@@ -28,14 +28,14 @@ Ikuti panduan berikut untuk menjalankan project ini di komputer lokal Anda:
 ### Prasyarat (Prerequisites)
 Sebelum memulai, pastikan Anda telah menginstal:
 * [Git](https://git-scm.com/) di komputer Anda.
-* Layanan web server lokal seperti [XAMPP](https://www.apachefriends.org/) (jika project menggunakan PHP), atau code editor seperti [VS Code](https://code.visualstudio.com/) dengan ekstensi **Live Server** (jika project murni static HTML/CSS/JS).
+* Layanan web server lokal seperti [XAMPP](https://www.apachefriends.org/), atau code editor seperti [VS Code](https://code.visualstudio.com/)
 
 ### Langkah-Langkah Installasi
 
 1.  **Clone Repositori**
     Buka terminal atau Git Bash, lalu jalankan perintah berikut untuk meng-clone repositori ini:
     ```bash
-    git clone [https://github.com/mars22144/peppy-s_bakery.git](https://github.com/mars22144/peppy-s_bakery.git)
+    git clone https://github.com/mars22144/peppy-s_bakery.git
     ```
 
 2.  **Masuk ke Direktori Project**
