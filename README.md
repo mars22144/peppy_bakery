@@ -35,19 +35,19 @@ Sebelum memulai, pastikan Anda telah menginstal:
 1.  **Clone Repositori**
     Buka terminal atau Git Bash, lalu jalankan perintah berikut untuk meng-clone repositori ini:
     ```bash
-    git clone https://github.com/mars22144/peppy-s_bakery.git
+    git clone https://github.com/mars22144/peppy_bakery.git
     ```
 
 2.  **Masuk ke Direktori Project**
     ```bash
-    cd peppy-s_bakery
+    cd peppy_bakery
     ```
 
 3.  **Menjalankan Aplikasi**
-    1. Pindahkan atau copy folder `peppy-s_bakery` ke dalam direktori server lokal Anda (contoh: `C:\xampp\htdocs\`).
+    1. Pindahkan atau copy folder `peppy_bakery` ke dalam direktori server lokal Anda (contoh: `C:\xampp\htdocs\`).
     2. Buka **XAMPP Control Panel**, lalu jalankan (Start) modul **Apache** (dan **MySQL** jika ada database).
     3. Jika menggunakan database, masuk ke `http://localhost/phpmyadmin`, buat database baru bernama `peppy_bakery`, dan import file `.sql` yang tersedia di dalam project ini.
-    4. Buka browser dan akses URL: `http://localhost/peppy-s_bakery`.
+    4. Buka browser dan akses URL: `http://localhost/peppy_bakery`.
 
 
 
