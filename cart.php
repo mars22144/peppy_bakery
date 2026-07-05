@@ -45,6 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_SESSION['cart'][$pid] = $qty;
                     }
                 }
+                
+                // Sync to DB
+                $new_qty = $_SESSION['cart'][$pid];
+                $stmtDb = $pdo->prepare('INSERT INTO carts (id_user, id_produk, qty) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE qty = VALUES(qty)');
+                $stmtDb->execute([$_SESSION['user_id'], $pid, $new_qty]);
             }
         }
     }
@@ -89,6 +94,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $_SESSION['cart'][$pid] = $qty;
                     }
                 }
+                
+                // Sync to DB
+                if (isset($_SESSION['cart'][$pid])) {
+                    $new_qty = $_SESSION['cart'][$pid];
+                    $stmtDb = $pdo->prepare('UPDATE carts SET qty = ? WHERE id_user = ? AND id_produk = ?');
+                    $stmtDb->execute([$new_qty, $_SESSION['user_id'], $pid]);
+                }
             }
         }
     }
@@ -96,6 +108,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'remove') {
         $pid = (int)($_POST['product_id'] ?? 0);
         unset($_SESSION['cart'][$pid]);
+        
+        // Sync to DB
+        $stmtDb = $pdo->prepare('DELETE FROM carts WHERE id_user = ? AND id_produk = ?');
+        $stmtDb->execute([$_SESSION['user_id'], $pid]);
     }
     
     header('Location: cart.php'); exit;
@@ -120,6 +136,10 @@ if (!empty($cart)) {
             if ($qty > (int)$p['stok']) {
                 $qty = (int)$p['stok'];
                 $_SESSION['cart'][$pid] = $qty;
+                
+                // Sync correction to DB
+                $stmtDb = $pdo->prepare('UPDATE carts SET qty = ? WHERE id_user = ? AND id_produk = ?');
+                $stmtDb->execute([$qty, $_SESSION['user_id'], $pid]);
             }
             $subtotal      = $p['harga'] * $qty;
             $grand_total  += $subtotal;

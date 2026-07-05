@@ -66,6 +66,12 @@ try {
     }
     $_SESSION['cart'][$pid] = $cart_qty + $qty;
 
+    // Persist to database carts table
+    $userId = $_SESSION['user_id'];
+    $newQty = $_SESSION['cart'][$pid];
+    $stmtDb = $pdo->prepare('INSERT INTO carts (id_user, id_produk, qty) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE qty = VALUES(qty)');
+    $stmtDb->execute([$userId, $pid, $newQty]);
+
     $total_qty = array_sum($_SESSION['cart']);
 
     echo json_encode([
