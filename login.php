@@ -28,6 +28,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['name']    = $user['nama'];
             $_SESSION['role']    = $user['role'];
 
+            // Sync cart database with session if role is customer
+            if ($user['role'] === 'customer') {
+                $stmtDb = $pdo->prepare('SELECT id_produk, qty FROM carts WHERE id_user = ?');
+                $stmtDb->execute([$user['id_user']]);
+                $dbCart = $stmtDb->fetchAll(PDO::FETCH_KEY_PAIR);
+
+                $sessionCart = $_SESSION['cart'] ?? [];
+                foreach ($sessionCart as $pid => $qty) {
+                    if (isset($dbCart[$pid])) {
+                        $dbCart[$pid] += $qty;
+                    } else {
+                        $dbCart[$pid] = $qty;
+                    }
+                }
+
+                if (!empty($dbCart)) {
+                    $insertStmt = $pdo->prepare('INSERT INTO carts (id_user, id_produk, qty) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE qty = VALUES(qty)');
+                    foreach ($dbCart as $pid => $qty) {
+                        $insertStmt->execute([$user['id_user'], $pid, $qty]);
+                    }
+                }
+
+                $_SESSION['cart'] = $dbCart;
+            }
+
             header('Location: ' . ($user['role'] === 'admin' ? 'admin/index_admin.php' : 'index.php'));
             exit;
         } else {
