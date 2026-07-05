@@ -120,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 unset($_SESSION['direct_buy']);
             } else {
                 $_SESSION['cart'] = [];
+                $pdo->prepare('DELETE FROM carts WHERE id_user = ?')->execute([$_SESSION['user_id']]);
             }
             header('Location: customer/orders.php?success=1'); exit;
 
