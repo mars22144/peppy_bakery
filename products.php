@@ -66,7 +66,7 @@ if ($search !== '') {
           <?php else: ?>
             <a href="product_detail.php?id=<?= $pid ?>" class="btn-primary ripple-btn"
               style="text-decoration:none;display:inline-block;margin-top:15px;vertical-align:middle;">
-              <?= ($i === 0 && $p['id_produk']) ? 'Detail &amp; Pesan' : 'Pesan' ?>
+              <?= ($i === 0 && $p['id_produk']) ? 'Pesan' : 'Pesan' ?>
             </a>
             <button class="btn-cart-quick quick-add-cart ripple-btn" data-id="<?= $pid ?>" title="Tambah langsung ke keranjang">
               <i class="fa-solid fa-cart-plus"></i>
