@@ -3,7 +3,15 @@ require_once 'config/database.php';
 include 'layouts/header.php';
 
 $pdo = getDB();
-$products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetchAll();
+$search = trim($_GET['search'] ?? '');
+
+if ($search !== '') {
+    $stmt = $pdo->prepare('SELECT * FROM products WHERE nama_produk LIKE :search ORDER BY id_produk DESC');
+    $stmt->execute(['search' => '%' . $search . '%']);
+    $products = $stmt->fetchAll();
+} else {
+    $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetchAll();
+}
 ?>
 
 <!-- ==================== PRODUCT SECTION ==================== -->
@@ -14,6 +22,13 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
       <span class="prod-label">OUR DAILY BAKE</span>
       <h1 class="prod-title">DAFTAR<br><span>MENU</span></h1>
       <p>Setiap roti di Peppy Bakery dibuat dari fermentasi yang lambat. Dipanggang setiap hari di oven berbahan bakar kayu kami untuk menghasilkan kerak yang renyah dan remah yang ringan serta aromatik.</p>
+    </div>
+
+    <div class="search-container reveal">
+      <form action="products.php" method="GET" class="search-form">
+        <input type="text" name="search" class="search-input" placeholder="Cari roti..." value="<?= htmlspecialchars($search) ?>">
+        <button type="submit" class="btn-primary ripple-btn search-btn">Cari</button>
+      </form>
     </div>
 
     <div class="product-grid">
@@ -62,7 +77,9 @@ $products = $pdo->query('SELECT * FROM products ORDER BY id_produk DESC')->fetch
       <?php endforeach; ?>
 
       <?php if (empty($products)): ?>
-      <p style="grid-column:1/-1;text-align:center;color:#aaa;padding:40px 0;">Belum ada produk tersedia.</p>
+      <p style="grid-column:1/-1;text-align:center;color:#aaa;padding:40px 0;">
+        <?= $search !== '' ? 'Roti dengan nama "' . htmlspecialchars($search) . '" tidak ditemukan.' : 'Belum ada produk tersedia.' ?>
+      </p>
       <?php endif; ?>
     </div>
 

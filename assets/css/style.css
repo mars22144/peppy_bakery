@@ -2935,3 +2935,44 @@ a.btn-primary {
     gap: 20px;
   }
 }
+
+/* === SEARCH FORM === */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 30px auto 40px auto;
+  max-width: 500px;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.search-form {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 20px;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  border-radius: 30px;
+  font-size: 0.95rem;
+  outline: none;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(232, 119, 34, 0.15);
+}
+
+.search-btn {
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+}
