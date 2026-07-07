@@ -1,4 +1,4 @@
-# Peppy's Bakery 🥖🍰
+# Peppy's Bakery 
 
 Selamat datang di repositori **Peppy's Bakery**! Project ini adalah platform berbasis web yang dirancang untuk memodernisasi toko roti tradisional ke ranah digital.
 
