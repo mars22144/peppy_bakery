@@ -45,8 +45,8 @@ Sebelum memulai, pastikan Anda telah menginstal:
 
 3.  **Menjalankan Aplikasi**
     1. Pindahkan atau copy folder `peppy_bakery` ke dalam direktori server lokal Anda (contoh: `C:\xampp\htdocs\`).
-    2. Buka **XAMPP Control Panel**, lalu jalankan (Start) modul **Apache** (dan **MySQL** jika ada database).
-    3. Jika menggunakan database, masuk ke `http://localhost/phpmyadmin`, buat database baru bernama `peppy_bakery`, dan import file `.sql` yang tersedia di dalam project ini.
+    2. Buka **XAMPP Control Panel**, lalu jalankan (Start) modul **Apache** dan **MySQL**.
+    3. Masuk ke `http://localhost/phpmyadmin`, buat database baru bernama `peppy_bakery`, dan import file `.sql` yang tersedia di dalam project ini.
     4. Buka browser dan akses URL: `http://localhost/peppy_bakery`.
 
 
